@@ -1,0 +1,2 @@
+#!/bin/bash
+df -h --total -x tmpfs -x devtmpfs

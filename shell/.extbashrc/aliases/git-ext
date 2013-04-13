@@ -1,0 +1,14 @@
+alias gitst='git status -sb'
+alias gitpso='git push origin'
+alias gitplo='git pull origin'
+alias gitc='git-cola'
+alias gitco='git checkout'
+alias gitb='git branch'
+function gitlb(){
+    git for-each-ref --format='%(refname:short)' --sort=-authordate --count=8 refs/heads/;
+}
+alias gitci='git commit -m'
+alias gita='git add -i'
+alias git-count='git shortlog -sn'
+alias git-undo='git reset --soft HEAD^'
+alias git-clear='git reset --hard HEAD'

@@ -1,0 +1,2 @@
+#!/bin/bash
+alias vm-instance-ubuntu='vboxheadless -v off --startvm "instance-srv [u11.10]"'

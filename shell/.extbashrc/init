@@ -1,0 +1,24 @@
+#!/bin/bash
+export EXTBASHRC=$HOME/.extbashrc
+
+# utils
+load(){
+    for f in $@ 
+    do 
+        . $f
+    done
+}
+
+term_title(){
+     echo -en "\033]2;$1\007"
+}
+
+
+# init: aliases
+load $EXTBASHRC/aliases/* 
+# init: colors
+. $EXTBASHRC/colors
+# init: environment
+load $EXTBASHRC/environment/* 
+# init: extensions
+load $EXTBASHRC/extensions/* 

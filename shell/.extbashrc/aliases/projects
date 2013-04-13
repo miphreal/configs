@@ -1,0 +1,19 @@
+#!/bin/bash
+# itechart-jobs project
+# ahalife project
+
+############
+# miph.pro #
+############
+
+# server
+alias 'ssh-miph-root'='ssh -i ~/.ssh/ovz6873r root@miph.pro -p 2200'
+alias 'ssh-miph-miph'='ssh -i ~/.ssh/ovz6873m miph@miph.pro -p 2200'
+
+##############
+# boot flash #
+##############
+export DEV_BOOT_TARGET_DIR=/media/boot/
+export DEV_BOOT_DEVICE=/dev/sdb
+alias 'boot-install'='sudo grub-install --no-floppy --root-directory=$DEV_BOOT_TARGET_DIR $DEV_BOOT_DEVICE'
+alias 'boot-test'='sudo qemu-system-i386 $DEV_BOOT_DEVICE'

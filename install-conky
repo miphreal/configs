@@ -1,0 +1,4 @@
+#!/bin/bash
+sudo cp conky/conky.conf /etc/conky/conky.conf
+
+killall conky && conky &
