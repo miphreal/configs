@@ -16,8 +16,6 @@ term_title(){
 
 # init: aliases
 load $EXTBASHRC/aliases/* 
-# init: colors
-. $EXTBASHRC/colors
 # init: environment
 load $EXTBASHRC/environment/* 
 # init: extensions
