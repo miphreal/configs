@@ -1,1 +1,1 @@
-alias 'du-ext'='du -chs `ls`'
+alias 'du.'='du -chs `ls`'

@@ -1,4 +1,0 @@
-export ANDROIDSDK="/code/android-dev/android-sdk-linux"
-export ANDROIDNDK="/code/android-dev/android-ndk-linux"
-export ANDROIDNDKVER=r8b
-export ANDROIDAPI=16
