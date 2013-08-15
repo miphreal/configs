@@ -1,14 +1,4 @@
 #!/bin/bash
-# itechart-jobs project
-# ahalife project
-
-############
-# miph.pro #
-############
-
-# server
-alias 'ssh-miph-root'='ssh -i ~/.ssh/ovz6873r root@miph.pro -p 2200'
-alias 'ssh-miph-miph'='ssh -i ~/.ssh/ovz6873m miph@miph.pro -p 2200'
 
 ##############
 # boot flash #
