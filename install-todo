@@ -1,4 +1,2 @@
 #!/bin/bash
-ln -s /home/miph/Dropbox/sys/todo/todo.txt ~/.todo.txt
-ln -s /home/miph/Dropbox/sys/todo/done.txt ~/.done.txt
 cp -R todo/* $HOME/bin/
