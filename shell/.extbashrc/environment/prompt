@@ -19,8 +19,9 @@ git_prompt ()
     else
         git_color=${c_git_dirty}
     fi
-
-    echo " $git_color[$git_branch]${c_reset}"
+    git_name=$(git config --get user.name)
+    git_email=$(git config --get user.email)
+    echo " $git_color[$git_branch]${c_reset}[$git_name][$git_email]"
 }
 
 PS1="#${debian_chroot:+($debian_chroot)}"
@@ -30,10 +31,13 @@ PS1="$PS1 \[\033[36m\]\t\[\033[00m\]"
 PS1="$PS1 \[\033[33m\]\u@\h\[\033[00m\]:"
 # current path
 PS1="$PS1 \[\033[01;34m\]\w\[\033[00m\]" 
+
 # git status
 PS1="$PS1\$(git_prompt)"
+
 # history command number
-PS1="$PS1 \[\033[35m\]!\!\[\033[00m\]"
+# PS1="$PS1 \[\033[35m\]!\!\[\033[00m\]"
+
 # prompt line
 PS1="$PS1 \n\[\033[37m\]\$ \[\033[00m\]"
 
