@@ -2,6 +2,10 @@ set nocompatible
 
 filetype on
 filetype plugin on
+filetype indent on
+
+let g:pymode_lint_write = 0
+let g:pymode_run_key = 'R'
 
 set tabstop=4
 set shiftwidth=4
@@ -29,7 +33,6 @@ function InsertTabWrapper()
  endif
 endfunction
 
-imap  <c-r>=InsertTabWrapper()
 set complete=""
 set complete+=.
 set complete+=k
@@ -42,8 +45,6 @@ autocmd BufRead *.py set smartindent cinwords=if,elif,else,for,while,try,except,
 
 let g:snippetsEmu_key = "<C-j>"
 
-vmap <C-C> "+yi
-imap <C-V> "+gPi
 
 colorscheme desert
 syntax on
@@ -70,17 +71,5 @@ set fileencodings=utf8,cp1251
 set guioptions-=T
 set guioptions-=r
 
-" CTRL-Tab is Next tab
-nnoremap <C-Tab> :tabnext<CR>
-" CTRL-Shift-Tab is Previous tab
-nnoremap <C-S-Tab> :tabprevious<CR>
-" use Alt-Left and Alt-Right to move current tab to left or right
-nnoremap <silent> <A-Left> :execute 'silent! tabmove ' . (tabpagenr()-2)<CR>
-nnoremap <silent> <A-Right> :execute 'silent! tabmove ' . tabpagenr()<CR>
-" CTRL-F4 is :tabclose
-nnoremap <C-F4> :tabclose<CR>
 set showtabline=2
-" Tab is Next window
-nnoremap <Tab> <C-W>w
-" Shift-Tab is Previous window
- nnoremap <S-Tab> <C-W>W
+

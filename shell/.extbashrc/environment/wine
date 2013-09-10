@@ -1,0 +1,2 @@
+export WINEARCH="win32"
+export WINEPREFIX="/home/miph/.wineprefixes/wine32"
