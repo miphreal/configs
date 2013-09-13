@@ -21,7 +21,7 @@ git_prompt ()
     fi
     git_name=$(git config --get user.name)
     git_email=$(git config --get user.email)
-    echo " $git_color[$git_branch]${c_reset}[$git_name][$git_email]"
+    echo -e " $git_color[$git_branch]${txtrst}${txtwht}[$git_name]-[$git_email]${txtrst}"
 }
 
 PS1="#${debian_chroot:+($debian_chroot)}"
