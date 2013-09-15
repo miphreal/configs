@@ -2,7 +2,7 @@
 
 A bundle of user configs
 
-There are conky, shell, vim.
+There are conky, shell, vim, todo, gnome-shell, upstart jobs.
 
 # How to install:
 
@@ -11,3 +11,6 @@ There are conky, shell, vim.
     $ . install-shell
     $ . install-vim
     $ . install-conky
+    $ . install-todo
+    $ . install-gnome-shell-ext
+    $ . install-upstart
