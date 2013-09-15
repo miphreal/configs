@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="gnome-shell-extensions">
+  <schema path="/org/barisione/shell-extensions/message-notifier/" id="org.barisione.shell-extensions.message-notifier">
+    <key name="show-message-notifier" type="as">
+        <default><![CDATA[['<Super>l']]]></default>
+      <summary>Open the message notifier menu</summary>
+      <description>
+        Keybinding to open the message notifier menu.
+      </description>
+    </key>
+  </schema>
+</schemalist>

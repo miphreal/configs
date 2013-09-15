@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="per-window-keyboard-layout">
+  <schema path="/org/gnome/shell/extensions/per-window-keyboard-layout/" id="org.gnome.shell.extensions.per-window-keyboard-layout">
+    <key type="b" name="rememberpermanently">
+      <default>true</default>
+      <summary>Remember associations permanently.</summary>
+      <description>Remember even if an app is closed and opened again</description>
+    </key>
+    <key type="b" name="rememberforever">
+      <default>true</default>
+      <summary>Remember associations forever.</summary>
+      <description>Remember even if Gnome Shell is ended and started again</description>
+    </key>
+    <key type="as" name="app-list">
+      <default>[]</default>
+      <summary>App list</summary>
+      <description></description>
+    </key>
+    <key type="as" name="keyboard-layout-list">
+      <default>[]</default>
+      <summary>Keyboard layouts list</summary>
+      <description></description>
+    </key>
+  </schema>
+</schemalist>

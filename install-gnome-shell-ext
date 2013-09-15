@@ -1,0 +1,3 @@
+#!/bin/bash
+mkdir -p $HOME/.local/share/gnome-shell/extensions
+cp -R gnome-shell-extensions/* $HOME/.local/share/gnome-shell/extensions
