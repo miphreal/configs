@@ -14,3 +14,7 @@ There are conky, shell, vim, todo, gnome-shell, upstart jobs.
     $ . install-todo
     $ . install-gnome-shell-ext
     $ . install-upstart
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/miphreal/configs/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
