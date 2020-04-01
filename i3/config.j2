@@ -53,10 +53,10 @@ exec_always "setxkbmap -layout us,ru -option grp:win_space_toggle"
 exec --no-startup-id {{HOME}}/.local/bin/catctl up
 exec --no-startup-id nm-applet
 exec --no-startup-id /usr/bin/feh --bg-scale {{bg_image}}
-{# exec --no-startup-id /usr/bin/compton -f --opengl -b --opacity-rule '90:name *= "elmenu"' #}
 exec --no-startup-id /usr/bin/compton -f --opengl -b
 exec --no-startup-id i3-sensible-terminal
 exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
+exec --no-startup-id flameshot
 
 exec --no-startup-id {% if TARGET == 'pc' %}/usr/bin/google-chrome{% else %}/usr/bin/google-chrome-unstable{% endif %}
 
@@ -203,20 +203,10 @@ bar {
 bindsym $mod+n exec i3-input -F 'rename workspace to "%s"' -P 'new name: '
 
 # - screenshot
-bindsym Print exec gnome-screenshot -i
-bindsym $mod+Shift+Print exec "gnome-screenshot -a"; focus
-bindsym $mod+Shift+i exec {{HOME}}/.local/bin/imgur-screenshot.sh -l
-mode "screenshot" {
-     bindsym i exec {{HOME}}/.local/bin/imgur-screenshot.sh -l
-     bindsym w exec gnome-screenshot -w && notify-send -a gnome-screenshot 'window screenshot done'
-     bindsym a exec gnome-screenshot -a && notify-send -a gnome-screenshot 'area screenshot done'
-     bindsym s exec gnome-screenshot && notify-send -a gnome-screenshot 'screenshot done'
-     bindsym o exec $file_mgr ~/Pictures
-     bindsym Print mode "default"
-     bindsym Escape mode "default"
-     bindsym Return mode "default"
-}
-bindsym $mod+Print mode "screenshot"
+bindsym Print exec flameshot gui
+bindsym $mod+Print exec flameshot launcher
+bindsym $mod+Shift+Print exec flameshot gui -d 5000
+bindsym $mod+Ctrl+Print exec peek --no-headerbar
 
 # - lock screen
 bindsym $mod+Ctrl+l exec i3lock -i {{bg_image}}
@@ -248,7 +238,6 @@ bindsym --release $mod+bracketright exec --no-startup-id xdotool key --clearmodi
 
 for_window [class="^Google-chrome"] border none
 for_window [class="Xfce4-notes"] floating enable, border none
-for_window [class="Atom"] border none
 for_window [class="gnome-terminal-server|Gnome-terminal"] border 1pixel
 for_window [class="Lastfmlyricsgui.*"] floating enable, border 1pixel
 
@@ -261,7 +250,6 @@ for_window [class="Telegram.*"] border none
 
 for_window [class="Nautilus|org.gnome.Nautilus"] floating enable, border 1pixel
 
-for_window [class="electron.*|elmenu"] floating enable, border none
 for_window [class="[pP]olkit-gnome.*"] floating enable, border 1pixel
 for_window [class="[pP]eek"] floating enable, border 1pixel
 

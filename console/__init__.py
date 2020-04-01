@@ -11,7 +11,6 @@ Console themes:
 class Configuration(Base):
     HOME = Param.PATH("~")
     TARGET = Param()
-    YJ_PROJECT_ROOT = Param.PATH("~/Develop/yunojuno/platform")
     tmux_plugin_manager_dir = Param.PATH("~/.tmux/plugins/tpm")
     tmp_repo = "https://github.com/tmux-plugins/tpm"
     fonts_repo = "https://github.com/ryanoasis/nerd-fonts"

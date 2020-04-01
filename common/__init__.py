@@ -36,6 +36,8 @@ deps = """
     python-gobject
 
     # Other
+    flameshot
+    peek
     gparted
 
     # Build-related
