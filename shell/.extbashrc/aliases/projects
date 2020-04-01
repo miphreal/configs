@@ -1,9 +1,0 @@
-#!/bin/bash
-
-##############
-# boot flash #
-##############
-export DEV_BOOT_TARGET_DIR=/media/boot/
-export DEV_BOOT_DEVICE=/dev/sdb
-alias 'boot-install'='sudo grub-install --no-floppy --root-directory=$DEV_BOOT_TARGET_DIR $DEV_BOOT_DEVICE'
-alias 'boot-test'='sudo qemu-system-i386 $DEV_BOOT_DEVICE'

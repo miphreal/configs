@@ -1,7 +1,0 @@
-#!/bin/bash
-[[ -e ~/.bashrc ]] && cp ~/.bashrc ~/.bashrc.origin
-cp -R shell/.extbashrc ~/
-cp shell/.bashrc ~/
-
-# git configuration
-git config --global color.ui 1

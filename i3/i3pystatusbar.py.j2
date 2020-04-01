@@ -1,0 +1,95 @@
+{#
+    Template depends on:
+    - TARGET ('pc', 'nb')
+#}
+from i3pystatus import Status
+
+status = Status()
+
+{% if TARGET == 'nb' %}
+status.register(
+    'battery',
+    interval=5,
+    format='[{status} ]{percentage_design:.0f}%[ ({remaining})]',
+    status = {
+        'DPL': '\uf244',
+        'CHR': '\uf1e6',
+        'DIS': '\uf242',
+        'FULL': '\uf240',
+    },
+    hints={'separator': False, 'separator_block_width': 4},
+    alert=True,
+    alert_percentage=15,
+    charging_color='#3dd63d')
+{% endif %}
+
+status.register(
+    'xkblayout',
+    layouts=['us', 'ru'])
+
+status.register(
+    'pulseaudio',
+    on_middleclick='switch_mute',
+    format='\uf027{volume}',
+    format_muted='🔇{volume}')
+
+{% if TARGET == 'nb' %}
+status.register(
+    'backlight',
+    backlight='dell_backlight',
+    format='\uf069{percentage}%')
+{% endif %}
+
+status.register(
+    'clock',
+    format='\uf073 %d/%m',
+    color='#4da6ff')
+status.register(
+    'clock',
+    hints={'separator': False, 'separator_block_width': 4},
+    format='\uf017 %H:%M',
+    color='#99ccff')
+
+{% if TARGET != 'pc' %}
+status.register(
+    'network',
+    interface='wlp2s0',
+    format_up='{v4}',
+    color_up='#9fdf9f',
+    format_down='check wifi',
+    color_down='#ff9999')
+{% endif %}
+
+status.register('disk',
+    path='/home',
+    color='#9292b9',
+    format='ⓗ{avail:.0f}㎇')
+status.register(
+    'disk',
+    hints={'separator': False, 'separator_block_width': 4},
+    path='/',
+    color='#9292b9',
+    format='ⓡ{avail:.0f}㎇')
+
+status.register(
+    'mem',
+    hints = {'separator': False, 'separator_block_width': 8},
+    format='mem {percent_used_mem}%',
+    color='#9292b9',
+    warn_color='#9292b9',
+    alert_color='#ff9999')
+status.register(
+    'cpu_usage',
+    hints = {'separator': False, 'separator_block_width': 8},
+    format='cpu {usage:02}%',
+    color='#9292b9')
+
+status.register(
+    'lastfm',
+    playing_format='\uf001 {artist} - {track}',
+    playing_color='#ff661a',
+    apikey='f352ee77209490e00c4c11d3cc122f9c',
+    user='MiphAdler',
+    on_middleclick='~/.config/i3/statusbar/lastfm-lyrics-gui.pex')
+
+status.run()

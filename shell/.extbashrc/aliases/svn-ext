@@ -1,4 +1,0 @@
-alias svnadd='svn add `svn status | grep -Eo "\?.*" | grep -Eo "([^ \?].*)"`'
-alias svnrm='svn rm `svn status | grep -Eo "\!.*" | grep -Eo "([^ \!].*)"`'
-alias svnci='svn commit -m'
-alias svnst='svn status'

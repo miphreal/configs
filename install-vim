@@ -1,4 +1,0 @@
-#!/bin/bash
-[[ -e ~/.vimrc ]] && cp ~/.vimrc ~/.vimrc.origin
-cp -R vim/.vim ~/
-cp vim/.vimrc ~/

@@ -1,20 +1,5 @@
-# Intro
+# My Configs
 
-A bundle of user configs
+A set of my configs managed via `confctl`.
 
-There are conky, shell, vim, todo, gnome-shell, upstart jobs.
-
-# How to install:
-
-    $ git clone git@github.com:miphreal/configs.git
-    $ cd configs
-    $ . install-shell
-    $ . install-vim
-    $ . install-conky
-    $ . install-todo
-    $ . install-gnome-shell-ext
-    $ . install-upstart
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/miphreal/configs/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
+For more details see https://github.com/miphreal/confctl

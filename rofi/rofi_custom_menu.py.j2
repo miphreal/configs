@@ -1,0 +1,56 @@
+#!{{ ROFI_VENV_PYTHON_BIN }}
+import rofi_menu
+
+
+projects_menu = rofi_menu.Menu(
+    prompt="Projects",
+    items=[
+        rofi_menu.BackItem(),
+        rofi_menu.ShellItem("qcheck", "code-insiders ~/Develop/qcheck/"),
+        rofi_menu.ShellItem("rofi-menu", "code-insiders ~/Develop/rofi-menu/"),
+        rofi_menu.ShellItem("meuskit", "code-insiders ~/Develop/meuskit/"),
+        rofi_menu.ShellItem("BlackCat", "code-insiders ~/Develop/experiments/blackcat/"),
+        rofi_menu.ShellItem("Planner", "code-insiders ~/Develop/experiments/planner/"),
+        rofi_menu.ShellItem("El Menu", "code-insiders ~/Develop/experiments/elmenu/"),
+        rofi_menu.ShellItem(
+            "OpenVPN LightUI", "code-insiders ~/Develop/experiments/openvpn-lightui/"
+        ),
+        rofi_menu.ShellItem("HS Kurs", "code-insiders ~/Develop/experiments/hs-robbal/"),
+    ],
+)
+
+
+system_menu = rofi_menu.Menu(
+    prompt="Sys",
+    items=[
+        rofi_menu.ShellItem("Lock screen", "i3lock -i ~/.config/i3/bg.png"),
+        rofi_menu.ShellItem("Sleep", "systemctl suspend"),
+        rofi_menu.NestedMenu(
+            "Logout",
+            rofi_menu.Menu(
+                prompt="Logout",
+                items=[
+                    rofi_menu.ShellItem(
+                        "Yes", "i3-msg exit", flags={rofi_menu.FLAG_STYLE_URGENT}
+                    ),
+                    rofi_menu.ExitItem("No", flags={rofi_menu.FLAG_STYLE_ACTIVE}),
+                ],
+            ),
+        ),
+    ],
+)
+
+
+main_menu = rofi_menu.Menu(
+    prompt="menu",
+    items=[
+        rofi_menu.NestedMenu("Projects", projects_menu),
+        rofi_menu.TouchpadItem(),
+        rofi_menu.NestedMenu("Second monitor", rofi_menu.SecondMonitorMenu()),
+        rofi_menu.NestedMenu("System", system_menu),
+    ],
+)
+
+
+if __name__ == "__main__":
+    rofi_menu.run(main_menu)
