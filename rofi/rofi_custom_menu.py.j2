@@ -6,16 +6,15 @@ projects_menu = rofi_menu.Menu(
     prompt="Projects",
     items=[
         rofi_menu.BackItem(),
-        rofi_menu.ShellItem("qcheck", "code-insiders ~/Develop/qcheck/"),
-        rofi_menu.ShellItem("rofi-menu", "code-insiders ~/Develop/rofi-menu/"),
-        rofi_menu.ShellItem("meuskit", "code-insiders ~/Develop/meuskit/"),
-        rofi_menu.ShellItem("BlackCat", "code-insiders ~/Develop/experiments/blackcat/"),
-        rofi_menu.ShellItem("Planner", "code-insiders ~/Develop/experiments/planner/"),
-        rofi_menu.ShellItem("El Menu", "code-insiders ~/Develop/experiments/elmenu/"),
+        rofi_menu.ShellItem("lib/qcheck", "code-insiders ~/Develop/qcheck/"),
+        rofi_menu.ShellItem("lib/rofi-menu", "code-insiders ~/Develop/rofi-menu/"),
+        rofi_menu.ShellItem("configs", "code-insiders ~/Develop/configs/"),
+        rofi_menu.ShellItem("prj/meuskit", "code-insiders ~/Develop/meuskit/"),
+        rofi_menu.ShellItem("prj/planner", "code-insiders ~/Develop/experiments/planner/"),
+        rofi_menu.ShellItem("prj/elmenu", "code-insiders ~/Develop/experiments/elmenu/"),
         rofi_menu.ShellItem(
-            "OpenVPN LightUI", "code-insiders ~/Develop/experiments/openvpn-lightui/"
+            "prj/openvpn-lightui", "code-insiders ~/Develop/experiments/openvpn-lightui/"
         ),
-        rofi_menu.ShellItem("HS Kurs", "code-insiders ~/Develop/experiments/hs-robbal/"),
     ],
 )
 
@@ -25,6 +24,7 @@ system_menu = rofi_menu.Menu(
     items=[
         rofi_menu.ShellItem("Lock screen", "i3lock -i ~/.config/i3/bg.png"),
         rofi_menu.ShellItem("Sleep", "systemctl suspend"),
+        rofi_menu.ShellItem("Reboot", "systemctl reboot"),
         rofi_menu.NestedMenu(
             "Logout",
             rofi_menu.Menu(

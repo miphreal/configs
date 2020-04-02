@@ -57,6 +57,3 @@ done
         self.template(
             "zprezto-personal/alias.zsh.j2", symlink=personal_module / "alias.zsh"
         )
-        self.template(
-            "zprezto-personal/projects.zsh.j2", symlink=personal_module / "projects.zsh"
-        )
