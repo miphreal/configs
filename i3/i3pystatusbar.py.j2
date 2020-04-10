@@ -1,12 +1,12 @@
 {#
     Template depends on:
-    - TARGET ('pc', 'nb')
+    - TARGET ('pc', 'nb' or 'laptop')
 #}
 from i3pystatus import Status
 
 status = Status()
 
-{% if TARGET == 'nb' %}
+{% if TARGET == 'nb' or TARGET == 'laptop' %}
 status.register(
     'battery',
     interval=5,
@@ -33,7 +33,7 @@ status.register(
     format='\uf027{volume}',
     format_muted='🔇{volume}')
 
-{% if TARGET == 'nb' %}
+{% if TARGET == 'nb' or TARGET == 'laptop' %}
 status.register(
     'backlight',
     backlight='dell_backlight',

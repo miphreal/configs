@@ -1,0 +1,103 @@
+" vim: syntax=vim
+
+call plug#begin(stdpath('data') . '/plugged')
+
+Plug 'preservim/nerdtree'
+
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+
+" Status line - https://github.com/vim-airline/vim-airline
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
+" Multiple cursors - https://github.com/terryma/vim-multiple-cursors/
+Plug 'terryma/vim-multiple-cursors'
+
+" Quick jumping - https://github.com/easymotion/vim-easymotion
+Plug 'easymotion/vim-easymotion'
+
+" Incremental search - https://github.com/haya14busa/incsearch.vim
+Plug 'haya14busa/incsearch.vim'
+Plug 'haya14busa/incsearch-easymotion.vim'
+
+" Fuzzy finder - https://github.com/junegunn/fzf.vim
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+" Custom user text objects - https://github.com/kana/vim-textobj-user
+Plug 'kana/vim-textobj-user'
+" -- indentation - https://github.com/kana/vim-textobj-indent
+Plug 'kana/vim-textobj-indent'
+" -- python functions and classess - https://github.com/bps/vim-textobj-python
+Plug 'bps/vim-textobj-python'
+" -- backticks - https://github.com/fvictorio/vim-textobj-backticks
+Plug 'fvictorio/vim-textobj-backticks'
+" -- func argument - https://github.com/sgur/vim-textobj-parameter
+Plug 'sgur/vim-textobj-parameter'
+
+" History of yanks - https://github.com/svermeulen/vim-yoink
+Plug 'svermeulen/vim-yoink'
+
+" Easy substitution - https://github.com/svermeulen/vim-subversive
+Plug 'svermeulen/vim-subversive'
+
+" Separate cut operation - https://github.com/svermeulen/vim-cutlass
+Plug 'svermeulen/vim-cutlass'
+
+call plug#end()
+
+let mapleader = " "
+
+set history=500
+syntax enable
+
+set number relativenumber
+augroup numbertoggle
+  autocmd!
+  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+augroup END
+
+set wildmenu
+set wildmode=list:longest
+
+" Enable filetype plugins
+filetype plugin on
+filetype indent on
+
+" Set to auto read when a file is changed from the outside
+set autoread
+au FocusGained,BufEnter * checktime
+
+" tabs and spaces handling
+set expandtab
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+
+" Cut operation
+nnoremap <Leader>d d
+xnoremap <Leader>d d
+
+nnoremap <Leader>dd dd
+xnoremap <Leader>dd dd
+
+" Ignore case when searching
+set ignorecase
+" When searching try to be smart about cases 
+set smartcase
+" Highlight search results
+set hlsearch
+" Makes search act like search in modern browsers
+set incsearch 
+
+set title
+set encoding=utf-8
+
+let g:yoinkIncludeDeleteOperations = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_theme='alduin'

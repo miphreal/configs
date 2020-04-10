@@ -16,20 +16,19 @@ class Configuration(Base):
     fonts_repo = "https://github.com/ryanoasis/nerd-fonts"
     prezto_repo = "https://github.com/sorin-ionescu/prezto"
 
-    def configure(self):
-        # patched fonts
+    def _configure_fonts(self):
         fonts_dir = self.CACHE_DIR / "fonts"
         if not (fonts_dir / ".git").exists():
             self.run_sh(f"git clone --depth 1 {self.fonts_repo} {fonts_dir}")
             self.run_sh(f'bash {fonts_dir / "install.sh"}')
 
-        # tmux
+    def _configure_tmux(self):
         self.ensure_folders(self.tmux_plugin_manager_dir)
         if not (self.tmux_plugin_manager_dir / ".git").exists():
             self.run_sh(f"git clone {self.tmp_repo} {self.tmux_plugin_manager_dir}")
         self.template("tmux.conf.j2", symlink=self.HOME / ".tmux.conf")
 
-        # prezto
+    def _configure_prezto(self):
         prezto_dir = self.HOME / ".zprezto"
         if not (prezto_dir / ".git").exists():
             self.run_sh(f'git clone --recursive {self.prezto_repo} "{prezto_dir}"')
@@ -57,3 +56,8 @@ done
         self.template(
             "zprezto-personal/alias.zsh.j2", symlink=personal_module / "alias.zsh"
         )
+
+    def configure(self):
+        self._configure_fonts()
+        self._configure_tmux()
+        self._configure_prezto()
