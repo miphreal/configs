@@ -56,9 +56,15 @@ exec --no-startup-id /usr/bin/feh --bg-scale {{bg_image}}
 exec --no-startup-id /usr/bin/compton -f --opengl -b
 exec --no-startup-id i3-sensible-terminal
 exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
+# -- tools
 exec --no-startup-id flameshot
+# -- messangers
+exec --no-startup-id slack
+exec --no-startup-id Telegram
+exec --no-startup-id skype
+exec --no-startup-id /opt/viber/Viber
 
-exec --no-startup-id {% if TARGET == 'pc' %}/usr/bin/google-chrome{% else %}/usr/bin/google-chrome-unstable{% endif %}
+exec --no-startup-id /usr/bin/google-chrome
 
 {% if TARGET == 'nb' %}
 {# "syndaemon" monitors keyboard and disables the touchpad when the keyboard is being used #}
@@ -244,7 +250,7 @@ for_window [class="Lastfmlyricsgui.*"] floating enable, border 1pixel
 for_window [class="Emacs|Code|Gvim|Atom|jetbrains-pycharm"] border none
 
 for_window [class="ViberPC"] border none
-for_window [class="Skype|skypeforlinux"] border none
+for_window [class="Skype|skypeforlinux"] border none, floating disable
 for_window [class="Slack.*"] border none
 for_window [class="Telegram.*"] border none
 
