@@ -41,3 +41,6 @@ fi
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ ! -s "$NVM_DIR/nvm.sh" ] && echo "Please install nvm https://github.com/nvm-sh/nvm#install--update-script"
+
+# In order not to be disturbed by Ctrl-S ctrl-Q in terminals
+stty -ixon
