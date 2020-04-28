@@ -22,3 +22,8 @@ function remove-from-history {
     fc -R
     zsh
 }
+
+# Project specific
+{% for alias, bin in project_aliases %}
+alias {{ alias }}='{{ bin }}'
+{% endfor %}

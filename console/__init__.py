@@ -1,3 +1,6 @@
+from pathlib import Path
+import os
+
 from confctl import Base, Param
 
 
@@ -15,6 +18,7 @@ class Configuration(Base):
     tmp_repo = "https://github.com/tmux-plugins/tpm"
     fonts_repo = "https://github.com/ryanoasis/nerd-fonts"
     prezto_repo = "https://github.com/sorin-ionescu/prezto"
+    project_aliases = Param()
 
     def _configure_fonts(self):
         fonts_dir = self.CACHE_DIR / "fonts"
@@ -57,7 +61,23 @@ done
             "zprezto-personal/alias.zsh.j2", symlink=personal_module / "alias.zsh"
         )
 
+    def get_project_aliases(self):
+        project_aliases = []
+
+        for prj in Path('~/Develop').expanduser().iterdir():
+            prjbin = prj / prj.name
+            if prjbin.exists() and prjbin.is_file() and os.access(prjbin, os.X_OK):
+                with prjbin.open('rt') as script_file:
+                    script_text = script_file.read()
+                    if "# confctl.console:gen-alias" in script_text:
+                        self.info(f"* Found project management script: {prjbin}")
+                        project_aliases.append([prj.name, f"source {prjbin}"])
+
+        return project_aliases
+
     def configure(self):
+        self.project_aliases = self.get_project_aliases()
+
         self._configure_fonts()
         self._configure_tmux()
         self._configure_prezto()
