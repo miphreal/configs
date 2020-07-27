@@ -8,6 +8,7 @@ class Configuration(Base):
     i3_config = Param.PATH("~/.config/i3/config")
     bg_image = Param.PATH("~/.config/i3/bg.png")
     statusbar_config = Param.PATH("~/.config/i3/statusbar.py")
+    I3_STATUS_VENV_PYTHON_BIN = Param.PATH("~/.pyenv/versions/i3status/bin/python")
 
     def configure(self):
         self.ensure_folders(self.i3_config.parent)
@@ -16,9 +17,15 @@ class Configuration(Base):
             self.run_sh(
                 # i3 deps
                 "sudo apt-get install -y i3 rofi compton fonts-font-awesome xbacklight > /dev/null",
+            )
+
+        venvs = self.run_sh("pyenv virtualenvs --bare")[0]
+        if not b"i3status" in venvs:
+            self.run_sh("pyenv virtualenv 3.8.5 i3status")
+            self.run_sh(
                 # i3pystatus deps
-                "sudo /usr/bin/python3 -m pip install --quiet git+https://github.com/enkore/i3pystatus.git",
-                "sudo /usr/bin/python3 -m pip install --quiet xkbgroup netifaces colour psutil",
+                f"{self.I3_STATUS_VENV_PYTHON_BIN} -m pip install --quiet git+https://github.com/enkore/i3pystatus.git",
+                f"{self.I3_STATUS_VENV_PYTHON_BIN} -m pip install --quiet xkbgroup netifaces colour psutil",
             )
 
         self.copy_file("bg.png", symlink=self.bg_image)
