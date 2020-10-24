@@ -13,8 +13,13 @@ projects_menu = rofi_menu.Menu(
         rofi_menu.ShellItem("prj/meuskit", "code-insiders ~/Develop/meuskit/"),
         rofi_menu.ShellItem("prj/planner", "code-insiders ~/Develop/experiments/planner/"),
         rofi_menu.ShellItem("prj/elmenu", "code-insiders ~/Develop/experiments/elmenu/"),
+        rofi_menu.ShellItem("prj/imagen", "code-insiders ~/Develop/imagen/imagen.code-workspace"),
+        rofi_menu.ShellItem("prj/voxy", "code-insiders ~/Develop/voxy/voxy.code-workspace"),
         rofi_menu.ShellItem(
             "prj/openvpn-lightui", "code-insiders ~/Develop/experiments/openvpn-lightui/"
+        ),
+        rofi_menu.ShellItem(
+            "prj/uhtishka", "code-insiders ~/Develop/crm-owl/"
         ),
     ],
 )
@@ -23,12 +28,13 @@ projects_menu = rofi_menu.Menu(
 system_menu = rofi_menu.Menu(
     prompt="Sys",
     items=[
-        rofi_menu.ShellItem("Lock screen", "i3lock -i ~/.config/i3/bg.png"),
-        rofi_menu.ShellItem("Sleep", "systemctl suspend"),
-        rofi_menu.ShellItem("Reboot", "systemctl reboot"),
+        rofi_menu.ShellItem("Lock screen", "i3lock -i ~/.config/i3/bg.png", icon="system-lock-screen"),
+        rofi_menu.ShellItem("Sleep", "systemctl suspend", icon="sleep"),
+        rofi_menu.ShellItem("Reboot", "systemctl reboot", icon="gnome-session-reboot"),
         rofi_menu.NestedMenu(
             "Logout",
-            rofi_menu.Menu(
+            icon="system-log-out",
+            menu=rofi_menu.Menu(
                 prompt="Logout",
                 items=[
                     rofi_menu.ShellItem(
@@ -45,10 +51,10 @@ system_menu = rofi_menu.Menu(
 main_menu = rofi_menu.Menu(
     prompt="menu",
     items=[
-        rofi_menu.NestedMenu("Projects", projects_menu),
+        rofi_menu.NestedMenu("Projects", projects_menu, icon="folder"),
         rofi_menu.TouchpadItem(),
-        rofi_menu.NestedMenu("Second monitor", rofi_menu.SecondMonitorMenu()),
-        rofi_menu.NestedMenu("System", system_menu),
+        rofi_menu.NestedMenu("Second monitor", rofi_menu.SecondMonitorMenu(), icon="monitor"),
+        rofi_menu.NestedMenu("System", system_menu, icon="system"),
     ],
 )
 
