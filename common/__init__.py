@@ -23,6 +23,7 @@ deps = """
     mc
     ranger
     tree
+    fzf
 
     # archives
     atool
@@ -32,13 +33,14 @@ deps = """
     xsel
 
     # Python related
-    python-pip
-    python-gobject
+    # python-pip
+    # python-gobject
 
     # Other
     flameshot
     peek
     gparted
+    exa
 
     # Build-related
     build-essential

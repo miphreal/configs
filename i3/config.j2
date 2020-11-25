@@ -53,7 +53,7 @@ exec_always "setxkbmap -layout us,ru -option grp:win_space_toggle"
 exec --no-startup-id {{HOME}}/.local/bin/catctl up
 exec --no-startup-id nm-applet
 exec --no-startup-id /usr/bin/feh --bg-scale {{bg_image}}
-exec --no-startup-id /usr/bin/compton -f --opengl -b
+#exec --no-startup-id /usr/bin/compton -f --opengl -b
 exec --no-startup-id i3-sensible-terminal
 exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
 # -- tools
