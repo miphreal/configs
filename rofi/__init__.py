@@ -20,6 +20,7 @@ class Configuration(Base):
             self.run_sh(f"{self.ROFI_VENV_PYTHON_BIN} -m pip install rofi_menu")
 
         self.template("rofi.conf.j2", "config", self.rofi_config)
+        self.template("rofi.conf.rasi.j2", "config.rasi", self.rofi_config)  # newer config format
         self.template(
             "rofi_custom_menu.py.j2", "rofi-custom-menu", self.rofi_custom_menu_bin
         )

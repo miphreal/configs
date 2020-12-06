@@ -1,0 +1,21 @@
+configuration {
+	modi: "{{ ROFI_MODES }}";
+	width: {{ ROFI_WIDTH }};
+	columns: {{ ROFI_COLUMNS }};
+	font: "{{ ROFI_FONT }}";
+	sidebar-mode: true;
+	matching: "fuzzy";
+	separator-style: "solid";
+	click-to-exit: true;
+	color-normal: "argb:00000000,  #D8DEE9 , argb:00000000,  #FAC863 ,  #1B2B34";
+	color-urgent: "argb:00000000,  #F99157 , argb:00000000,  #F99157 ,  #1B2B34";
+	color-active: "argb:00000000,  #6699CC , argb:00000000,  #6699CC ,  #1B2B34";
+	color-window: "argb:ee222222,  #FAC863 ,  #FAC863";
+	kb-remove-to-eol: "Control+Shift+4";
+	kb-accept-entry: "Control+l,Return,KP_Enter";
+	kb-mode-next: "Shift+Right,Control+Tab";
+	kb-mode-previous: "Shift+Left,Control+Shift+Tab";
+	kb-row-up: "Up,Control+k,Shift+Tab,Shift+ISO_Left_Tab";
+	kb-row-down: "Down,Control+j";
+	kb-cancel: "Escape,Control+bracketleft,Super+d";
+}
