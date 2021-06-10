@@ -1,0 +1,13 @@
+BREW_HOME="{{ HOME }}/.linuxbrew"
+
+if [ -d "$BREW_HOME" ]; then
+  export PATH="$BREW_HOME/bin:$PATH"
+  eval $($BREW_HOME/bin/brew shellenv)
+
+  if type brew &>/dev/null; then
+    FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+
+    autoload -Uz compinit
+    compinit
+  fi
+fi

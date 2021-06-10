@@ -60,14 +60,17 @@ done
         self.template(
             "zprezto-personal/alias.zsh.j2", symlink=personal_module / "alias.zsh"
         )
+        self.template(
+            "zprezto-personal/brew.zsh.j2", symlink=personal_module / "brew.zsh"
+        )
 
     def get_project_aliases(self):
         project_aliases = []
 
-        for prj in Path('~/Develop').expanduser().iterdir():
+        for prj in Path("~/Develop").expanduser().iterdir():
             prjbin = prj / prj.name
             if prjbin.exists() and prjbin.is_file() and os.access(prjbin, os.X_OK):
-                with prjbin.open('rt') as script_file:
+                with prjbin.open("rt") as script_file:
                     script_text = script_file.read()
                     if "# confctl.console:gen-alias" in script_text:
                         self.info(f"* Found project management script: {prjbin}")

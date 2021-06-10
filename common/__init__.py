@@ -1,7 +1,7 @@
 from confctl import Base, Param
 
 
-deps = """
+apt_deps = """
     # network utils
     ca-certificates
     curl
@@ -15,15 +15,17 @@ deps = """
     iotop
     dstat
     pv
-
-    # network
+    procps
+    ## network interface monitor
     slurm
 
     # file manager
+    git
     mc
     ranger
     tree
     fzf
+    file
 
     # archives
     atool
@@ -68,9 +70,11 @@ class Configuration(Base):
 
     def configure(self):
         if "full" in self.flags:
-            self.install_packages(deps)
+            self.install_packages(apt_deps)
+            self.run_sh(
+                '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
+            )
 
         self.ensure_folders(
-            self.HOME / ".local/bin",
-            self.HOME / ".local/opt",
+            self.HOME / ".local/bin", self.HOME / ".local/opt",
         )
