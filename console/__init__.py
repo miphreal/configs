@@ -19,6 +19,7 @@ class Configuration(Base):
     fonts_repo = "https://github.com/ryanoasis/nerd-fonts"
     prezto_repo = "https://github.com/sorin-ionescu/prezto"
     project_aliases = Param()
+    flags = Param(set())
 
     def _configure_fonts(self):
         fonts_dir = self.CACHE_DIR / "fonts"
@@ -54,15 +55,23 @@ done
         # `personal` zprezto module
         personal_module = prezto_dir / "modules/personal"
         self.ensure_folders(personal_module)
-        self.template(
-            "zprezto-personal/init.zsh.j2", symlink=personal_module / "init.zsh"
-        )
-        self.template(
-            "zprezto-personal/alias.zsh.j2", symlink=personal_module / "alias.zsh"
-        )
-        self.template(
-            "zprezto-personal/brew.zsh.j2", symlink=personal_module / "brew.zsh"
-        )
+        for f in ("init", "alias", "nvm", "poetry", "pyenv"):
+            self.template(
+                f"zprezto-personal/{f}.zsh.j2", symlink=personal_module / f"{f}.zsh"
+            )
+
+    def _configure_kitty(self):
+        self.ensure_folders("~/.config/kitty")
+        if "full" in self.flags:
+            self.run_sh(
+                "curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin"
+            )
+
+        self.copy_file("kitty.conf", symlink=self.HOME / ".config/kitty/kitty.conf")
+
+        kitty_theme = "Tomorrow"
+        self.run_sh("git clone --depth 1 git@github.com:dexpota/kitty-themes.git ~/.config/kitty/kitty-themes")
+        self.symlink("~/.config/kitty/theme.conf", f"~/.config/kitty/kitty-themes/themes/{kitty_theme}.conf", )
 
     def get_project_aliases(self):
         project_aliases = []
@@ -81,6 +90,9 @@ done
     def configure(self):
         self.project_aliases = self.get_project_aliases()
 
+        self.copy_file("profile", "~/.profile")
+
+        self._configure_kitty()
         self._configure_fonts()
         self._configure_tmux()
         self._configure_prezto()

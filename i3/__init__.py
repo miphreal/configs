@@ -9,6 +9,7 @@ class Configuration(Base):
     bg_image = Param.PATH("~/.config/i3/bg.png")
     statusbar_config = Param.PATH("~/.config/i3/statusbar.py")
     I3_STATUS_VENV_PYTHON_BIN = Param.PATH("~/.pyenv/versions/i3status/bin/python")
+    ROFI_BIN = Param("rofi")
 
     def configure(self):
         self.ensure_folders(self.i3_config.parent)
@@ -16,7 +17,7 @@ class Configuration(Base):
         if "full" in self.flags:
             self.run_sh(
                 # i3 deps
-                "sudo apt-get install -y i3 rofi compton fonts-font-awesome xbacklight > /dev/null",
+                "sudo apt-get install -y i3 compton fonts-font-awesome xbacklight > /dev/null",
             )
 
         venvs = self.run_sh("pyenv virtualenvs --bare")[0]

@@ -7,22 +7,15 @@ class Configuration(Base):
     flags = Param(set())
 
     def configure(self):
-        if "full" in self.flags:
-            self.install_packages(
-                """
-                neovim
-                python3-neovim
-                """
-            )
+        self.ensure_folders(self.NVIM_CONFIG_DIR)
+        self.run_sh(f"mv {self.NVIM_CONFIG_DIR} $(mktemp -d)")
 
         self.ensure_folders(self.NVIM_CONFIG_DIR)
-        self.template("init.vim.j2", self.NVIM_CONFIG_DIR / "init.vim")
+        self.run_sh(
+            f"cp -R {self.CONFIGURATION_DIR / 'nvim/*'} {self.NVIM_CONFIG_DIR}/"
+        )
 
         if "full" in self.flags:
-            _vim_plug_url = (
-                "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+            self.run_sh(
+                "git clone https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim"
             )
-            _vim_plug_dst = self.HOME / ".local/share/nvim/site/autoload/plug.vim"
-            self.run_sh(f"curl -fLo {_vim_plug_dst} --create-dirs {_vim_plug_url}")
-
-        self.run_sh("nvim +PlugInstall +qall")

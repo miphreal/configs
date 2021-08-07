@@ -5,12 +5,13 @@ alias gitc='git-cola'
 alias gitco='git checkout'
 alias gitb='git branch'
 function gitlb(){
-    git for-each-ref --format='%(refname:short)' --sort=-authordate --count=8 refs/heads/;
+    git for-each-ref --format='%(refname:short)' --sort=-authordate --count=10 refs/heads/;
 }
 alias git-count='git shortlog -sn'
 alias git-undo='git reset --soft HEAD^'
 alias git-clear='git reset --hard HEAD'
 alias gits='git stash'
+alias gitsb='git checkout $(git branch | fzf)'
 alias git-push='git push origin $(gitcb)'
 alias git-pull='git pull origin $(gitcb)'
 

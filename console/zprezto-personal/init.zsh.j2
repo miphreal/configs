@@ -16,5 +16,7 @@ bindkey '^L' autosuggest-execute
 # Make sure .local/bin has priority
 export PATH="{{ HOME }}/.local/bin:$PATH"
 
-# Init brew
-source "${0:h}/brew.zsh"
+# Init shell tools
+source "${0:h}/pyenv.zsh"
+source "${0:h}/poetry.zsh"
+source "${0:h}/nvm.zsh"

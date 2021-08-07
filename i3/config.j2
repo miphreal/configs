@@ -11,6 +11,7 @@ set $w7 7:VII
 set $w8 8:VIII
 set $w9 9:IX
 set $w10 10:X
+workspace_layout tabbed
 
 set $font FontAwesome
 
@@ -40,7 +41,7 @@ bindsym $mod+Cyrillic_shorti kill
 bindsym --release button2 kill
 
 # use rofi
-set $rofi rofi -show-icons -click-to-exit
+set $rofi {{ROFI_BIN}} -show-icons -click-to-exit
 
 bindsym $mod+d exec --no-startup-id $rofi -i -show drun -p "menu:"
 bindsym $mod+F1 exec --no-startup-id $rofi -show menu
@@ -259,9 +260,13 @@ for_window [class="Nautilus|org.gnome.Nautilus"] floating enable, border 1pixel
 for_window [class="[pP]olkit-gnome.*"] floating enable, border 1pixel
 for_window [class="[pP]eek"] floating enable, border 1pixel
 
+for_window [class="kitty"] border 1pixel
+
+for_window [workspace=$w5] layout tabbed
+
 
 # move windows to a certain place
 assign [class="google-chrome.*|chrome"] → $w1
-assign [class="[Gg]nome-terminal.*"] → $w2
+assign [class="[Gg]nome-terminal.*|kitty"] → $w2
 assign [class="Code.*|code.*"] → $w3
 assign [class="(Viber|Skype|Telegram|Slack).*"] → $w5

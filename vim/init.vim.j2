@@ -50,34 +50,18 @@ Plug 'svermeulen/vim-cutlass'
 
 call plug#end()
 
-let mapleader = " "
 
-set history=500
-syntax enable
 
-set number relativenumber
 augroup numbertoggle
   autocmd!
   autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
   autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 augroup END
 
-set wildmenu
-set wildmode=list:longest
 
-" Enable filetype plugins
-filetype plugin on
-filetype indent on
 
-" Set to auto read when a file is changed from the outside
-set autoread
 au FocusGained,BufEnter * checktime
 
-" tabs and spaces handling
-set expandtab
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
 
 " Cut operation
 nnoremap <Leader>d d
@@ -86,17 +70,11 @@ xnoremap <Leader>d d
 nnoremap <Leader>dd dd
 xnoremap <Leader>dd dd
 
-" Ignore case when searching
-set ignorecase
-" When searching try to be smart about cases 
-set smartcase
 " Highlight search results
 set hlsearch
 " Makes search act like search in modern browsers
-set incsearch 
+set incsearch
 
-set title
-set encoding=utf-8
 
 let g:yoinkIncludeDeleteOperations = 1
 let g:airline#extensions#tabline#enabled = 1

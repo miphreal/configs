@@ -5,12 +5,6 @@ if [[ -z "$LANG" ]]; then
   export LANG='en_US.UTF-8'
 fi
 
-export PYENV_ROOT="{{ HOME }}/.pyenv"
-export PATH="$PYENV_ROOT/bin:/usr/local/bin:$PATH"
-export PYENV_VIRTUALENV_DISABLE_PROMPT=TRUE
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
-
 export UID=$UID
 
 # Ensure path arrays do not contain duplicates.
@@ -38,9 +32,6 @@ if (( $#commands[(i)lesspipe(|.sh)] )); then
 fi
 
 
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ ! -s "$NVM_DIR/nvm.sh" ] && echo "Please install nvm https://github.com/nvm-sh/nvm#install--update-script"
 
 # In order not to be disturbed by Ctrl-S ctrl-Q in terminals
 stty -ixon
