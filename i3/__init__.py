@@ -22,7 +22,7 @@ class Configuration(Base):
 
         venvs = self.run_sh("pyenv virtualenvs --bare")[0]
         if not b"i3status" in venvs:
-            self.run_sh("pyenv virtualenv 3.8.5 i3status")
+            self.run_sh("pyenv virtualenv 3.8.12 i3status")
             self.run_sh(
                 # i3pystatus deps
                 f"{self.I3_STATUS_VENV_PYTHON_BIN} -m pip install --quiet git+https://github.com/enkore/i3pystatus.git",

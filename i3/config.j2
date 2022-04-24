@@ -63,7 +63,8 @@ exec --no-startup-id flameshot
 exec --no-startup-id slack
 exec --no-startup-id Telegram
 exec --no-startup-id skypeforlinux
-exec --no-startup-id /opt/viber/Viber
+exec --no-startup-id ~/.local/opt/viber.AppImage
+exec --no-startup-id teams
 
 exec --no-startup-id /usr/bin/google-chrome
 
@@ -158,7 +159,7 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec sh -c '[ $(echo "No\nYes" | rofi -i -dmenu -p "Logout?" -width 10 -lines 2) = "Yes" ] && i3-msg exit'
+bindsym $mod+Shift+e exec sh -c '[ $(echo "No\nYes" | {{ROFI_BIN}} -i -dmenu -p "Logout?" -width 10 -lines 2) = "Yes" ] && i3-msg exit'
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -219,8 +220,8 @@ bindsym $mod+Ctrl+Print exec peek --no-headerbar
 bindsym $mod+Ctrl+l exec i3lock -i {{bg_image}}
 
 # screen brightness controls
-bindsym XF86MonBrightnessUp exec xbacklight -inc 10
-bindsym XF86MonBrightnessDown exec xbacklight -dec 10
+bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +1
+bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 1-
 
 # - scratchpad
 bindsym $mod+minus move scratchpad
@@ -269,4 +270,4 @@ for_window [workspace=$w5] layout tabbed
 assign [class="google-chrome.*|chrome"] → $w1
 assign [class="[Gg]nome-terminal.*|kitty"] → $w2
 assign [class="Code.*|code.*"] → $w3
-assign [class="(Viber|Skype|Telegram|Slack).*"] → $w5
+assign [class="(Viber|Skype|Telegram|Slack|teams).*"] → $w5

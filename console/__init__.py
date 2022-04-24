@@ -94,5 +94,5 @@ done
 
         self._configure_kitty()
         self._configure_fonts()
-        self._configure_tmux()
+        # self._configure_tmux()
         self._configure_prezto()

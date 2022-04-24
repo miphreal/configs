@@ -21,7 +21,7 @@ class Configuration(Base):
         # Create venv
         venvs = self.run_sh("pyenv virtualenvs --bare")[0]
         if not b"rofi" in venvs:
-            self.run_sh("pyenv virtualenv 3.8.2 rofi")
+            self.run_sh("pyenv virtualenv 3.8.12 rofi")
             # self.run_sh(f"{self.ROFI_VENV_PYTHON_BIN} -m pip install rofi-menu")
             self.run_sh(
                 "ln -s ~/Develop/rofi-menu/rofi_menu ~/.pyenv/versions/rofi/lib/python3.8/site-packages/rofi_menu"
@@ -32,3 +32,6 @@ class Configuration(Base):
             "rofi_custom_menu.py.j2", "rofi-custom-menu", self.rofi_custom_menu_bin
         )
         self.run_sh(f"chmod +x {self.rofi_custom_menu_bin}")
+
+
+
