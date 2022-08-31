@@ -1,6 +1,6 @@
-# vim:fileencoding=utf-8:ft=conf:foldmethod=marker
+# vim:fileencoding=utf-8:ft=conf:foldmethod=marker:fmr=[[[,]]]
 
-#: Fonts {{{
+#: Fonts [[[
 #: kitty has very powerful font management. You can configure
 #: individual font faces and even specify special fonts for particular
 #: characters.
@@ -161,9 +161,9 @@ font_family {{ terminal.font_family }}
 #: monitor DPI to arrive at a pixel value. There must be four values
 #: corresponding to thin, normal, thick, and very thick lines.
 
-#: }}}
+#: ]]]
 
-#: Cursor customization {{{
+#: Cursor customization [[[
 
 cursor #6e6e6e
 
@@ -201,9 +201,9 @@ cursor_text_color background
 #: Stop blinking cursor after the specified number of seconds of
 #: keyboard inactivity.  Set to zero to never stop blinking.
 
-#: }}}
+#: ]]]
 
-#: Scrollback {{{
+#: Scrollback [[[
 
 # scrollback_lines 2000
 
@@ -257,9 +257,9 @@ cursor_text_color background
 #: for high precision scrolling devices on platforms such as macOS and
 #: Wayland. Use negative numbers to change scroll direction.
 
-#: }}}
+#: ]]]
 
-#: Mouse {{{
+#: Mouse [[[
 
 # mouse_hide_wait 3.0
 
@@ -353,7 +353,7 @@ detect_urls yes
 #: The default shape of the mouse pointer when dragging across text.
 #: Valid values are: arrow, beam and hand
 
-#: Mouse actions {{{
+#: Mouse actions [[[
 
 #: Mouse buttons can be remapped to perform arbitrary actions. The
 #: syntax for doing so is:
@@ -430,11 +430,11 @@ detect_urls yes
 #: Select from the clicked point to the end of the line
 
 # mouse_map shift+right press ungrabbed,grabbed mouse_selection extend
-#: }}}
+#: ]]]
 
-#: }}}
+#: ]]]
 
-#: Performance tuning {{{
+#: Performance tuning [[[
 
 # repaint_delay 10
 
@@ -463,9 +463,9 @@ detect_urls yes
 #: keyboard repeat rate, you may notice some slight input latency. If
 #: so, set this to no.
 
-#: }}}
+#: ]]]
 
-#: Terminal bell {{{
+#: Terminal bell [[[
 
 # enable_audio_bell no
 
@@ -492,9 +492,9 @@ detect_urls yes
 
 #: Program to run when a bell occurs.
 
-#: }}}
+#: ]]]
 
-#: Window layout {{{
+#: Window layout [[[
 
 # remember_window_size  yes
 # initial_window_width  640
@@ -628,9 +628,9 @@ detect_urls yes
 #: confirmation. This confirmation also applies to requests to quit
 #: the entire application (all OS windows, via the quit action).
 
-#: }}}
+#: ]]]
 
-#: Tab bar {{{
+#: Tab bar [[[
 
 # tab_bar_edge bottom
 
@@ -730,9 +730,9 @@ detect_urls yes
 #: Background color for the tab bar. Defaults to using the terminal
 #: background color.
 
-#: }}}
+#: ]]]
 
-#: Color scheme {{{
+#: Color scheme [[[
 
 background #ffffff
 foreground #324d3c
@@ -803,7 +803,7 @@ background_opacity 0.9
 
 #: The background for text selected with the mouse.
 
-#: The color table {{{
+#: The color table [[[
 
 #: The 256 terminal colors. There are 8 basic colors, each color has a
 #: dull and bright version, for the first 16 colors. You can set the
@@ -873,11 +873,11 @@ background_opacity 0.9
 
 #: Color for marks of type 3 (violet)
 
-#: }}}
+#: ]]]
 
-#: }}}
+#: ]]]
 
-#: Advanced {{{
+#: Advanced [[[
 
 # shell .
 
@@ -997,9 +997,9 @@ background_opacity 0.9
 #: work. Changing this option by reloading the config will only affect
 #: newly created windows.
 
-#: }}}
+#: ]]]
 
-#: OS specific tweaks {{{
+#: OS specific tweaks [[[
 
 # wayland_titlebar_color system
 
@@ -1084,9 +1084,9 @@ background_opacity 0.9
 #: to x11 or wayland to force the choice. Changing this setting by
 #: reloading the config is not supported.
 
-#: }}}
+#: ]]]
 
-#: Keyboard shortcuts {{{
+#: Keyboard shortcuts [[[
 
 #: Keys are identified simply by their lowercase unicode characters.
 #: For example: ``a`` for the A key, ``[`` for the left square bracket
@@ -1165,7 +1165,7 @@ background_opacity 0.9
 #: kitty +kitten hints --hints-offset to zero for all mappings,
 #: including the builtin ones.
 
-#: Clipboard {{{
+#: Clipboard [[[
 
 # map kitty_mod+c copy_to_clipboard
 
@@ -1192,9 +1192,9 @@ background_opacity 0.9
 
 #:     map kitty_mod+y new_window less @selection
 
-#: }}}
+#: ]]]
 
-#: Scrolling {{{
+#: Scrolling [[[
 
 # map kitty_mod+up        scroll_line_up
 # map kitty_mod+down      scroll_line_down
@@ -1214,9 +1214,9 @@ background_opacity 0.9
 #: For more details on piping screen and buffer contents to external
 #: programs, see launch.
 
-#: }}}
+#: ]]]
 
-#: Window management {{{
+#: Window management [[[
 
 # map kitty_mod+enter new_window
 
@@ -1268,9 +1268,9 @@ background_opacity 0.9
 # map kitty_mod+8 eighth_window
 # map kitty_mod+9 ninth_window
 # map kitty_mod+0 tenth_window
-#: }}}
+#: ]]]
 
-#: Tab management {{{
+#: Tab management [[[
 
 # map kitty_mod+right next_tab
 # map kitty_mod+left  previous_tab
@@ -1294,9 +1294,9 @@ background_opacity 0.9
 #: the current tab rather than at the end of the tabs list, use::
 
 #:     map ctrl+t new_tab !neighbor [optional cmd to run]
-#: }}}
+#: ]]]
 
-#: Layout management {{{
+#: Layout management [[[
 
 # map kitty_mod+l next_layout
 
@@ -1308,9 +1308,9 @@ background_opacity 0.9
 #: Similarly, to switch back to the previous layout::
 
 #:    map ctrl+alt+p last_used_layout
-#: }}}
+#: ]]]
 
-#: Font sizes {{{
+#: Font sizes [[[
 
 #: You can change the font size for all top-level kitty OS windows at
 #: a time or only the current one.
@@ -1327,9 +1327,9 @@ background_opacity 0.9
 #: size::
 
 #:     map kitty_mod+f6 change_font_size current 10.0
-#: }}}
+#: ]]]
 
-#: Select and act on visible text {{{
+#: Select and act on visible text [[[
 
 #: Use the hints kitten to select text and either pass it to an
 #: external program or insert it into the terminal or copy it to the
@@ -1378,9 +1378,9 @@ background_opacity 0.9
 
 #: The hints kitten has many more modes of operation that you can map
 #: to different shortcuts. For a full description see kittens/hints.
-#: }}}
+#: ]]]
 
-#: Miscellaneous {{{
+#: Miscellaneous [[[
 
 # map kitty_mod+f11    toggle_fullscreen
 # map kitty_mod+f10    toggle_maximized
@@ -1466,11 +1466,11 @@ background_opacity 0.9
 #:     map ctrl+alt+a send_text normal Word\x1b[H
 #:     map ctrl+alt+a send_text application Word\x1bOH
 
-#: }}}
+#: ]]]
 
-#: }}}
+#: ]]]
 
-#: Theme Override {{{
+#: Theme Override [[[
 # Github theme from "https://github.com/dexpota/kitty-themes"
 background            #f4f4f4
 foreground            #3e3e3e
@@ -1493,7 +1493,7 @@ color14               #1cfafe
 color7                #ffffff
 color15               #ffffff
 selection_foreground  #f4f4f4
-#}}}
+#]]]
 
 map ctrl+f launch --type=overlay --stdin-source=@screen_scrollback /usr/bin/fzf --no-sort --no-mouse --exact -i
 

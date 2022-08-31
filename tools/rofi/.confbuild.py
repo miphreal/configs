@@ -1,4 +1,7 @@
 def rofi(ctl):
+    if not ctl.is_linux:
+        return
+
     ctl.conf(
         ROFI_FONT="Roboto Mono for Powerline 11",
         ROFI_MODES="window,drun,run,ssh,menu:~/.local/bin/rofi-custom-menu",
