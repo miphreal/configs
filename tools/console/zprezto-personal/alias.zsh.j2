@@ -1,0 +1,30 @@
+# Aliases
+alias gitst='git status -sb'
+alias gitcb='git rev-parse --symbolic-full-name --abbrev-ref HEAD'
+alias gitc='git-cola'
+alias gitco='git checkout'
+alias gitb='git branch'
+function gitlb(){
+    git for-each-ref --format='%(refname:short)' --sort=-authordate --count=10 refs/heads/;
+}
+alias git-count='git shortlog -sn'
+alias git-undo='git reset --soft HEAD^'
+alias git-clear='git reset --hard HEAD'
+alias gits='git stash'
+alias gitsb='git checkout $(git branch | fzf)'
+alias git-push='git push origin $(gitcb)'
+alias git-pull='git pull origin $(gitcb)'
+
+alias dkc='docker-compose'
+
+function remove-from-history {
+    echo "Removing $1 from history..."
+    LC_ALL=C test $1 && sed -i "/$1/d" $HISTFILE
+    fc -R
+    zsh
+}
+
+# Project specific
+{% for alias, bin in project_aliases %}
+alias {{ alias }}='{{ bin }}'
+{% endfor %}

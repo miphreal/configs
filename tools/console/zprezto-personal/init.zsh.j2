@@ -1,0 +1,22 @@
+setopt histignorespace
+
+# Source module files.
+source "${0:h}/alias.zsh"
+
+# config for zsh-history-substring-search
+bindkey '^P' history-substring-search-up
+bindkey '^N' history-substring-search-down
+bindkey '^K' history-substring-search-up
+bindkey '^J' history-substring-search-down
+
+# config for zsh-autosuggestions
+bindkey '^L' autosuggest-execute
+
+
+# Make sure .local/bin has priority
+export PATH="{{ HOME }}/.local/bin:$PATH"
+
+# Init shell tools
+source "${0:h}/pyenv.zsh"
+source "${0:h}/poetry.zsh"
+source "${0:h}/nvm.zsh"
