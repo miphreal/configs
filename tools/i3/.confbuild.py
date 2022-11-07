@@ -3,9 +3,10 @@ def i3(ctl):
         return
 
     ctl.conf(
-        i3_config_dir="~/.config/i3",
+        python_version="3.8.13",
+        i3_config_dir="{{ user.config }}/i3",
         bg_image="{{ i3_config_dir }}/bg.png",
-        I3_STATUS_VENV_PYTHON_BIN="~/.pyenv/versions/i3status/bin/python",
+        i3_status_venv_python_bin="~/.pyenv/versions/i3status/bin/python",
         ROFI_BIN="rofi",
         statusbar_config="{{ i3_config_dir }}/statusbar.py",
     )
@@ -15,15 +16,14 @@ def i3(ctl):
     if "full" in ctl.ctx:
         ctl.sudo("apt-get install -y i3 compton fonts-font-awesome xbacklight")
 
-    venvs = ctl.sh("pyenv virtualenvs --bare")
-    if all("i3status" not in vname for vname in venvs):
-        ctl.sh("pyenv virtualenv 3.8.13 i3status")
+    if "i3status" not in ctl.sh("pyenv virtualenvs --bare"):
+        ctl.sh("pyenv virtualenv {{ python_version }} i3status")
         ctl.sh(
             # i3pystatus deps
-            f"{ctl.I3_STATUS_VENV_PYTHON_BIN} -m pip install --quiet git+https://github.com/enkore/i3pystatus.git"
+            f"{ctl.i3_status_venv_python_bin} -m pip install --quiet git+https://github.com/enkore/i3pystatus.git"
         )
         ctl.sh(
-            f"{ctl.I3_STATUS_VENV_PYTHON_BIN} -m pip install --quiet xkbgroup netifaces colour psutil",
+            f"{ctl.i3_status_venv_python_bin} -m pip install --quiet xkbgroup netifaces colour psutil",
         )
 
     # ctl.copy("./bg.png", ctl.bg_image)

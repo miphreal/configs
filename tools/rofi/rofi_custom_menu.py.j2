@@ -6,17 +6,9 @@ projects_menu = rofi_menu.Menu(
     prompt="Projects",
     items=[
         rofi_menu.BackItem(),
-        rofi_menu.ShellItem("lib/qcheck", "code-insiders ~/Develop/qcheck/"),
-        rofi_menu.ShellItem("lib/gqltype", "code-insiders ~/Develop/gqltype/"),
-        rofi_menu.ShellItem("lib/rofi-menu", "code-insiders ~/Develop/rofi-menu/"),
-        rofi_menu.ShellItem("my/configs", "code-insiders ~/Develop/configs/"),
-        rofi_menu.ShellItem("prj/meuskit", "code-insiders ~/Develop/meuskit/"),
-        rofi_menu.ShellItem("prj/planner", "code-insiders ~/Develop/experiments/planner/"),
-        rofi_menu.ShellItem("prj/elmenu", "code-insiders ~/Develop/experiments/elmenu/"),
-        rofi_menu.ShellItem("prj/imagen", "code-insiders ~/Develop/imagen/imagen.code-workspace"),
-        rofi_menu.ShellItem(
-            "prj/openvpn-lightui", "code-insiders ~/Develop/experiments/openvpn-lightui/"
-        ),
+        {% for project_name, project_edit in projects %}
+        rofi_menu.ShellItem("{{ project_name }}", "{{ project_edit }}"),
+        {% endfor %}
     ],
 )
 
