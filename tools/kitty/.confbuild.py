@@ -1,15 +1,21 @@
-def kitty(ctl):
-    ctl.conf(
-        kitty_font=ctl.dep("//fonts:fira_code").font_name,
+def kitty(conf):
+    # conf.dep(
+    #     "platform::linux || platform::macos",
+    #     "apt::htop || brew::htop",
+    #     "pipx::confctl@1.0.0",
+    #     "pyenv::python@3.10.4",
+    #     "asdf::python@3.10.4",
+    #     "conf::tools/i3:i3?no-restart",
+    # )
+    conf.conf(
+        kitty_font=conf.dep("//fonts").FiraCode,
         kitty_bin="{{ user.bin }}/kitty",
-        kitty_conf_dir="{{ user.config }}/kitty",
-        kitty_conf="{{ kitty_conf_dir }}/kitty.conf-fake",
-        kitty_dist_dir="{{ user.opt }}/kitty.app-fake",
+        kitty_dist_dir=conf.dep("dir::{{ user.opt }}/kitty.app-fake"),
+        kitty_conf=conf.dep("path::{{ user.config }}/kitty.conf-fake"),
     )
-    ctl.ensure_dirs(ctl.kitty_conf_dir, ctl.kitty_dist_dir)
 
-    if "full" in ctl.ctx:
-        ctl.sh(
+    if "full" in conf.ctx:
+        conf.sh(
             """
             curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin \\
                 launch=n dest={{ kitty_dist_dir }}
@@ -17,4 +23,4 @@ def kitty(ctl):
             """
         )
 
-    ctl.render("./kitty.conf.j2", ctl.kitty_conf)
+    conf.render("./kitty.conf.j2", conf.kitty_conf)

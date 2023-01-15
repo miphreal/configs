@@ -1,40 +1,41 @@
 import os
 import platform
 
+system_name = platform.system()
 
-def main(ctl):
-    """Root target"""
-    system_name = platform.system()
-    ctl.conf(
-        # Root context
-        is_linux=system_name == "Linux",
-        is_macos=system_name == "Darwin",
-        user=dict(
-            home="{{ env.HOME }}",
-            bin="{{ user.home }}/.local/bin",
-            opt="{{ user.home }}/.local/opt",
-            config="{{ user.home }}/.config",
-            cache="{{ user.home }}/.cache",
-        ),
-        env=os.environ,
-        terminal=dict(
-            font_family="{{ dep('//fonts').FiraCode }}",
-            font_size=12,
-        ),
-    )
+# Root context
+is_linux = system_name == "Linux"
+is_macos = system_name == "Darwin"
+user = dict(
+    bin="{{ env.HOME }}/.local/bin",
+    opt="{{ env.HOME }}/.local/opt",
+    config="{{ env.HOME }}/.config",
+    cache="{{ env.HOME }}/.cache",
+)
+env = os.environ
+terminal = dict(
+    font_family="{{ dep('//fonts').FiraCode }}",
+    font_size=12,
+)
 
 
-def setup(ctl):
-    if ctl.is_linux:
-        ctl.dep("//tools/i3")
-        ctl.dep("//tools/rofi")
+def __resolve_platform__(spec: str):
+    spec = spec.lower()
+    match (spec, system_name):
+        case ("linux", "Linux"):
+            return True
+        case ("macos", "Darwin"):
+            return True
+    return False
 
-    elif ctl.is_macos:
-        ctl.dep("//tools/homebrew")
 
-    ctl.dep("//tools/zsh")
-    ctl.dep("//tools/pyenv")
-    ctl.dep("//tools/nvm")
+def linux(conf):
+    conf.dep("//tools/i3")
+    conf.dep("//tools/rofi")
 
-    ctl.dep("//tools/kitty")
-    ctl.dep("//tools/nvim")
+    conf.dep("//tools/zsh")
+    conf.dep("//tools/pyenv")
+    conf.dep("//tools/nvm")
+
+    conf.dep("//tools/kitty")
+    conf.dep("//tools/nvim")

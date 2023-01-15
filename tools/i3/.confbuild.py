@@ -3,15 +3,34 @@ def i3(ctl):
         return
 
     ctl.conf(
-        python_version="3.8.13",
-        i3_config_dir="{{ user.config }}/i3",
+        python_version="3.10.4",
+        i3_config_dir=ctl.dep("dir::{{ user.config }}/i3"),
         bg_image="{{ i3_config_dir }}/bg.png",
         i3_status_venv_python_bin="~/.pyenv/versions/i3status/bin/python",
-        ROFI_BIN="rofi",
+        rofi_bin="rofi",
+        rofi_cmd="{{ rofi_bin }} -show-icons -click-to-exit",
         statusbar_config="{{ i3_config_dir }}/statusbar.py",
+        font="FontAwesome",
     )
-
-    ctl.ensure_dirs(ctl.i3_config_dir)
+    ctl.conf(
+        autostart=[
+            "nm-applet",
+            f"/usr/bin/feh --bg-scale {ctl.bg_image}",
+            "/usr/bin/compton -f --opengl -b",
+            "i3-sensible-terminal",
+            "/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1",
+            "flameshot",
+            "/usr/bin/google-chrome",
+            # * messengers
+            # "slack",
+            # "Telegram",
+            # "skypeforlinux",
+            # "~/.local/opt/viber.AppImage",
+            # "teams",
+            # * "syndaemon" monitors keyboard and disables the touchpad when the keyboard is being used #
+            # "/usr/bin/syndaemon -i 0.5 -K -R"
+        ]
+    )
 
     if "full" in ctl.ctx:
         ctl.sudo("apt-get install -y i3 compton fonts-font-awesome xbacklight")

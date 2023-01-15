@@ -1,23 +1,26 @@
 # vim:filetype=i3
+# i3 config file (v4)
+
 set $mod Mod4
 
-set $w1 1:I
-set $w2 2:II
-set $w3 3:III
-set $w4 4:IV
-set $w5 5:V
-set $w6 6:VI
-set $w7 7:VII
-set $w8 8:VIII
-set $w9 9:IX
-set $w10 10:X
+exec --no-startup-id i3-sensible-terminal
+
+# Define names for default workspaces for which we configure key bindings later on.
+# We use variables to avoid repeating the names in multiple places.
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+font pango:{{font}} 8
+
 workspace_layout tabbed
-
-set $font FontAwesome
-
-set $file_mgr nautilus
-
-font pango:$font 8
 
 # Layout colors           border  bg      text    indicator
 client.focused            #1F1F1F #505050 #BBBBBB #4F4F4F
@@ -26,6 +29,20 @@ client.unfocused          #1A1A1A #1A1A1A #4F4F4F #1A1A1A
 client.urgent             #1A1A1A #3B89B5 #a5a5a5 #1A1A1A
 client.background         #121212
 
+# Start XDG autostart .desktop files using dex. See also
+# https://wiki.archlinux.org/index.php/XDG_Autostart
+# exec --no-startup-id dex --autostart --environment i3
+
+
+# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
+# screen before suspend. Use loginctl lock-session to lock your screen.
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+
+# NetworkManager is the most popular way to manage wireless networks on Linux,
+# and nm-applet is a desktop environment-independent system tray GUI for it.
+exec --no-startup-id nm-applet
+
+
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
@@ -33,45 +50,23 @@ floating_modifier $mod
 bindsym $mod+Return exec i3-sensible-terminal
 
 # start a file manager
-bindsym $mod+Shift+Return exec $file_mgr
+bindsym $mod+Shift+Return exec nautilus
 
 # kill focused window
 bindsym $mod+q kill
 bindsym $mod+Cyrillic_shorti kill
 bindsym --release button2 kill
 
-# use rofi
-set $rofi {{ROFI_BIN}} -show-icons -click-to-exit
+bindsym $mod+d exec --no-startup-id {{rofi_cmd}} -i -show drun -p "menu:"
+bindsym $mod+F7 exec --no-startup-id {{rofi_cmd}} -show menu
+bindsym $mod+Tab exec --no-startup-id {{rofi_cmd}} -show window
 
-bindsym $mod+d exec --no-startup-id $rofi -i -show drun -p "menu:"
-bindsym $mod+F7 exec --no-startup-id $rofi -show menu
-bindsym $mod+Tab exec --no-startup-id $rofi -show window
-
-exec_always "setxkbmap -layout us,ru -option grp:win_space_toggle"
-
+# exec_always "setxkbmap -layout us,ru -option grp:win_space_toggle"
 
 # autorun
-exec --no-startup-id nm-applet
-exec --no-startup-id /usr/bin/feh --bg-scale {{bg_image}}
-#exec --no-startup-id /usr/bin/compton -f --opengl -b
-exec --no-startup-id i3-sensible-terminal
-exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
-# -- tools
-exec --no-startup-id flameshot
-# -- messangers
-exec --no-startup-id slack
-exec --no-startup-id Telegram
-exec --no-startup-id skypeforlinux
-exec --no-startup-id ~/.local/opt/viber.AppImage
-exec --no-startup-id teams
-
-exec --no-startup-id /usr/bin/google-chrome
-
-{% if TARGET == 'nb' %}
-{# "syndaemon" monitors keyboard and disables the touchpad when the keyboard is being used #}
-exec --no-startup-id /usr/bin/syndaemon -i 0.5 -K -R
-{% endif %}
-
+{% for cmd in autostart %}
+exec --no-startup-id {{cmd}}
+{% endfor %}
 
 # border sizes
 bindsym $mod+o border normal
@@ -109,7 +104,7 @@ bindsym $mod+v split h
 bindsym $mod+semicolon split v
 
 # enter fullscreen mode for the focused container
-bindsym $mod+f fullscreen toggle global
+bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
@@ -130,35 +125,35 @@ bindsym $mod+a focus parent
 #bindsym $mod+d focus child
 
 # switch to workspace
-bindsym $mod+1 workspace $w1
-bindsym $mod+2 workspace $w2
-bindsym $mod+3 workspace $w3
-bindsym $mod+4 workspace $w4
-bindsym $mod+5 workspace $w5
-bindsym $mod+6 workspace $w6
-bindsym $mod+7 workspace $w7
-bindsym $mod+8 workspace $w8
-bindsym $mod+9 workspace $w9
-bindsym $mod+0 workspace $w10
+bindsym $mod+1 workspace number $ws1
+bindsym $mod+2 workspace number $ws2
+bindsym $mod+3 workspace number $ws3
+bindsym $mod+4 workspace number $ws4
+bindsym $mod+5 workspace number $ws5
+bindsym $mod+6 workspace number $ws6
+bindsym $mod+7 workspace number $ws7
+bindsym $mod+8 workspace number $ws8
+bindsym $mod+9 workspace number $ws9
+bindsym $mod+0 workspace number $ws10
 
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace $w1
-bindsym $mod+Shift+2 move container to workspace $w2
-bindsym $mod+Shift+3 move container to workspace $w3
-bindsym $mod+Shift+4 move container to workspace $w4
-bindsym $mod+Shift+5 move container to workspace $w5
-bindsym $mod+Shift+6 move container to workspace $w6
-bindsym $mod+Shift+7 move container to workspace $w7
-bindsym $mod+Shift+8 move container to workspace $w8
-bindsym $mod+Shift+9 move container to workspace $w9
-bindsym $mod+Shift+0 move container to workspace $w10
+bindsym $mod+Shift+1 move container to workspace number $ws1
+bindsym $mod+Shift+2 move container to workspace number $ws2
+bindsym $mod+Shift+3 move container to workspace number $ws3
+bindsym $mod+Shift+4 move container to workspace number $ws4
+bindsym $mod+Shift+5 move container to workspace number $ws5
+bindsym $mod+Shift+6 move container to workspace number $ws6
+bindsym $mod+Shift+7 move container to workspace number $ws7
+bindsym $mod+Shift+8 move container to workspace number $ws8
+bindsym $mod+Shift+9 move container to workspace number $ws9
+bindsym $mod+Shift+0 move container to workspace number $ws10
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec sh -c '[ $(echo "No\nYes" | {{ROFI_BIN}} -i -dmenu -p "Logout?" -width 10 -lines 2) = "Yes" ] && i3-msg exit'
+bindsym $mod+Shift+e exec sh -c '[ $(echo "No\nYes" | {{rofi_bin}} -i -dmenu -p "Logout?" -width 10 -lines 2) = "Yes" ] && i3-msg exit'
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -189,18 +184,18 @@ bindsym $mod+r mode "resize"
 bar {
     status_command {{i3_status_venv_python_bin}} {{statusbar_config}}
     strip_workspace_numbers yes
-    font pango:$font, Icons 8
+    font pango:{{font}}, Icons 8
     position top
-        colors {
-            background #080808
-            statusline #808080
-            separator #808080
-            #               border  fg      text
-            focused_workspace  #5B4961 #222222 #AAAAAA
-            active_workspace   #080808 #080808 #797979
-            inactive_workspace #080808 #080808 #4F4F4F
-            urgent_workspace   #080808 #080808 #EA4C59
-        }
+    colors {
+        background #080808
+        statusline #808080
+        separator #808080
+        #               border  fg      text
+        focused_workspace  #5B4961 #222222 #AAAAAA
+        active_workspace   #080808 #080808 #797979
+        inactive_workspace #080808 #080808 #4F4F4F
+        urgent_workspace   #080808 #080808 #EA4C59
+    }
     mode dock
     hidden_state hide
 }
@@ -229,17 +224,24 @@ bindsym $mod+equal scratchpad show
 # - bar
 bindsym $mod+slash bar mode toggle
 
-# - sound
-bindsym XF86AudioLowerVolume exec amixer -D pulse sset Master 5%-
-bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 5%+
-bindsym XF86AudioMute        exec amixer -D pulse set Master Playback Switch toggle
-bindsym $mod+Shift+minus     exec amixer -D pulse sset Master 5%-
-bindsym $mod+Shift+plus      exec amixer -D pulse sset Master 5%+
-bindsym --release $mod+p            exec --no-startup-id xdotool key --clearmodifiers XF86AudioPlay
-bindsym --release $mod+bracketleft  exec --no-startup-id xdotool key --clearmodifiers XF86AudioPrev
-bindsym --release $mod+bracketright exec --no-startup-id xdotool key --clearmodifiers XF86AudioNext
+# Use pactl to adjust volume in PulseAudio.
+set $refresh_i3status killall -SIGUSR1 i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
-###
+## - sound
+# bindsym XF86AudioLowerVolume exec amixer -D pulse sset Master 5%-
+# bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 5%+
+# bindsym XF86AudioMute        exec amixer -D pulse set Master Playback Switch toggle
+# bindsym $mod+Shift+minus     exec amixer -D pulse sset Master 5%-
+# bindsym $mod+Shift+plus      exec amixer -D pulse sset Master 5%+
+# bindsym --release $mod+p            exec --no-startup-id xdotool key --clearmodifiers XF86AudioPlay
+# bindsym --release $mod+bracketleft  exec --no-startup-id xdotool key --clearmodifiers XF86AudioPrev
+# bindsym --release $mod+bracketright exec --no-startup-id xdotool key --clearmodifiers XF86AudioNext
+
+##
 # windows adjustment
 # helper: find window's name $ xprop |awk '/WM_CLASS/{print $4}'
 
@@ -262,11 +264,11 @@ for_window [class="[pP]eek"] floating enable, border 1pixel
 
 for_window [class="kitty"] border 1pixel
 
-for_window [workspace=$w5] layout tabbed
+for_window [workspace=$ws5] layout tabbed
 
 
 # move windows to a certain place
-assign [class="google-chrome.*|chrome"] → $w1
-assign [class="[Gg]nome-terminal.*|kitty"] → $w2
-assign [class="Code.*|code.*"] → $w3
-assign [class="(Viber|Skype|Telegram|Slack|teams).*"] → $w5
+assign [class="google-chrome.*|chrome"] → $ws1
+assign [class="[Gg]nome-terminal.*|kitty"] → $ws2
+assign [class="Code.*|code.*"] → $ws3
+assign [class="(Viber|Skype|Telegram|Slack|teams).*"] → $ws5

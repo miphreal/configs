@@ -1,15 +1,15 @@
 from pathlib import Path
 
 
-def rofi(ctl):
-    if not ctl.is_linux:
+def rofi(conf):
+    if not conf.is_linux:
         return
 
-    ctl.conf(
-        python_version="3.8.13",
+    conf(
+        python_version="3.10.4",
         venv_name="rofi",
-        i3_lock_background_image="{{ dep('//tools/i3').bg_image }}",
-        rofi_venv_python_bin="{{ user.home }}/.pyenv/versions/rofi/bin/python",
+        use_rofi_menu_dev=True,
+        i3_lock_background_image="{{ dep('../i3').bg_image }}",
         rofi_font="Roboto Mono for Powerline 11",
         rofi_modes="window,drun,run,ssh,menu:{{ rofi_custom_menu_bin }}",
         rofi_config_dir="{{ user.config }}/rofi",
@@ -23,6 +23,7 @@ def rofi(ctl):
         projects=[
             ("prj/imagen", "code-insiders ~/Develop/imagen/imagen.code-workspace"),
             ("lib/rofi-menu", "code-insiders ~/Develop/rofi-menu/"),
+            ("lib/confctl+configs", "code-insiders ~/Develop/confctl.code-workspace"),
             ("my/configs", "code-insiders ~/Develop/configs/"),
             ("lib/qcheck", "code-insiders ~/Develop/qcheck/"),
             ("lib/gqltype", "code-insiders ~/Develop/gqltype/"),
@@ -32,23 +33,30 @@ def rofi(ctl):
             ),
         ],
     )
+    conf[
+        "dir::{{ rofi_config_dir }}",
+        "dir::{{ themes_dir }}",
+    ]
 
-    if not ctl.sh("which rofi"):
-        ctl.sudo("apt-get install -y rofi")
+    if not conf.sh("which rofi"):
+        conf.sudo("apt-get install -y rofi")
 
-    ctl.ensure_dirs(ctl.rofi_config_dir)
+    venv = conf["pyenv::python/{{ python_version }}/{{ venv_name }}"](
+        ("pip-installed", "rofi-menu==0.6")
+    )
+    venv_dir = venv.state("dir")
+    conf(rofi_venv_python_bin=f"{venv_dir}/bin/python")
 
-    if ctl.venv_name not in ctl.sh("pyenv virtualenvs --bare"):
-        ctl.sh("pyenv virtualenv {{ python_version }} {{ venv_name }}")
-        # ctl.sh(f"{ctl.ROFI_VENV_PYTHON_BIN} -m pip install rofi-menu")
-        ctl.sh(
-            "ln -s ~/Develop/rofi-menu/rofi_menu ~/.pyenv/versions/rofi/lib/python3.8/site-packages/rofi_menu"
-        )
+    if conf.use_rofi_menu_dev:
+        rofi_menu_dir = Path(f"{venv_dir}/lib/python3.10/site-packages/rofi_menu")
+        if rofi_menu_dir.exists():
+            conf.sh(f"rm -rf {rofi_menu_dir}")
+        conf.sh(f"ln -s ~/Develop/rofi-menu/rofi_menu {rofi_menu_dir}")
 
-    if not Path(ctl.themes_repo_dir).exists():
-        ctl.sh("git clone {{ themes_repo }} {{ themes_repo_dir }}")
-        ctl.sh("cp -R {{ themes_repo_dir }}/themes {{ themes_dir }}")
+    if not Path(conf.themes_repo_dir).exists():
+        conf.sh("git clone {{ themes_repo }} {{ themes_repo_dir }}")
+        conf.sh("cp -R {{ themes_repo_dir }}/themes {{ themes_dir }}")
 
-    ctl.render("./rofi.conf.rasi.j2", ctl.rofi_config)
-    ctl.render("./rofi_custom_menu.py.j2", "{{ rofi_custom_menu_bin }}")
-    ctl.sh("chmod +x {{ rofi_custom_menu_bin }}")
+    conf.render("./rofi.conf.rasi.j2", conf.rofi_config)
+    conf.render("./rofi_custom_menu.py.j2", "{{ rofi_custom_menu_bin }}")
+    conf.sh("chmod +x {{ rofi_custom_menu_bin }}")
