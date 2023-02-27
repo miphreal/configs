@@ -41,9 +41,9 @@ def rofi(conf):
     if not conf.sh("which rofi"):
         conf.sudo("apt-get install -y rofi")
 
-    venv = conf["pyenv::python/{{ python_version }}/{{ venv_name }}"](
-        ("pip-installed", "rofi-menu==0.6")
-    )
+    venv = conf["pyenv::python/{{ python_version }}/{{ venv_name }}"]
+    venv.state("pip-installed", "rofi-menu==0.6")
+
     venv_dir = venv.state("dir")
     conf(rofi_venv_python_bin=f"{venv_dir}/bin/python")
 

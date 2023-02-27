@@ -7,11 +7,11 @@ def kitty(conf):
     #     "asdf::python@3.10.4",
     #     "conf::tools/i3:i3?no-restart",
     # )
-    conf.conf(
-        kitty_font=conf.dep("//fonts").FiraCode,
-        kitty_bin="{{ user.bin }}/kitty",
-        kitty_dist_dir=conf.dep("dir::{{ user.opt }}/kitty.app-fake"),
-        kitty_conf=conf.dep("path::{{ user.config }}/kitty.conf-fake"),
+    conf(
+        kitty_font=conf["fonts"].FiraCode,
+        kitty_bin=conf["path::{{ user.bin }}/kitty"],
+        kitty_dist_dir=conf["dir::{{ user.opt }}/kitty.app-fake"],
+        kitty_conf=conf["path::{{ user.config }}/kitty.conf-fake"],
     )
 
     if "full" in conf.ctx:
