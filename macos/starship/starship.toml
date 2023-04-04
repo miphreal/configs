@@ -1,0 +1,20 @@
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = false
+#format = '$status$all'
+
+[character]
+success_symbol = '[➜](bold green)'
+error_symbol = '[➜](bold red)'
+
+[aws]
+disabled = true
+
+[directory]
+fish_style_pwd_dir_length = 1
+
+[status]
+disabled = false
+recognize_signal_code = false
+format = '[\[$status\]]($style) '

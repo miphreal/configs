@@ -1,0 +1,19 @@
+{{ dep('../fig').zsh_rc.pre }}
+
+# ssh
+eval "$(ssh-agent -s)"
+alias ssh="kitty +kitten ssh"
+
+# ls
+alias ls=exa
+alias ll='exa -la'
+
+# git
+alias gits='git status'
+
+
+{{ dep('../nvm').zsh_rc }}
+{{ dep('../pyenv').zsh_rc }}
+{{ dep('../starship').zsh_rc }}
+
+{{ dep('../fig').zsh_rc.post }}

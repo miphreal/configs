@@ -1,0 +1,31 @@
+# vim: filetype=sh
+
+yabai -m config layout bsp 
+
+# Follow mouse and focus windows under it
+yabai -m config focus_follows_mouse autoraise
+
+# Floating windows are always on top
+yabai -m config window_topmost on
+
+# Per App configs
+yabai -m rule --add label=sys-pref app="^System" manage=off layer=above
+yabai -m rule --add label=sys-pref app="^Notes" manage=off layer=above
+yabai -m rule --add label=sys-pref app="^Raycast" manage=off layer=above
+yabai -m rule --add label=sys-pref app="Microsoft Teams" manage=off layer=above
+
+# Appearance
+yabai -m config top_padding                  0
+yabai -m config bottom_padding               0
+yabai -m config left_padding                 0
+yabai -m config right_padding                0
+yabai -m config window_gap                   0
+
+# Spaces configuration
+yabai -m space 1 --layout stack --label browse
+yabai -m space 2 --layout bsp --label dev
+yabai -m space 3 --layout stack --label productivity
+yabai -m space 4 --layout bsp --label tmp-focus
+yabai -m space 5 --layout stack --label messagers
+yabai -m space 6 --layout float --label other
+

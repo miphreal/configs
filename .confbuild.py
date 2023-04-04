@@ -1,6 +1,11 @@
 import os
 import platform
 
+CONFCTL_RESOLVERS = [
+    "confctl.contrib.pyenv.setup",
+    "confctl.contrib.homebrew.setup",
+]
+
 system_name = platform.system()
 
 # Root context
@@ -18,24 +23,9 @@ terminal = dict(
     font_size=12,
 )
 
+def main(conf):
+    if is_macos:
+        conf.dep('macos')
+    elif is_linux:
+        conf.dep('linux')
 
-def __resolve_platform__(spec: str):
-    spec = spec.lower()
-    match (spec, system_name):
-        case ("linux", "Linux"):
-            return True
-        case ("macos", "Darwin"):
-            return True
-    return False
-
-
-def linux(conf):
-    conf.dep("//tools/i3")
-    conf.dep("//tools/rofi")
-
-    conf.dep("//tools/zsh")
-    conf.dep("//tools/pyenv")
-    conf.dep("//tools/nvm")
-
-    conf.dep("//tools/kitty")
-    conf.dep("//tools/nvim")
