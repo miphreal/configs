@@ -1,7 +1,14 @@
 {{ dep('../fig').zsh_rc.pre }}
 
+# ZLE configuration
+# * History search
+autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+
 # ssh
-eval "$(ssh-agent -s)"
+(eval "$(ssh-agent -s)") > /dev/null
+(ssh-add $HOME/.ssh/id_github) 2> /dev/null
 alias ssh="kitty +kitten ssh"
 
 # ls

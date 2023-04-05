@@ -16,17 +16,21 @@ def macos(conf):
 def common(conf):
     conf[
         "brew::exa",
-        #"pipx::pgcli",
+        "brew::fzf",
+        "brew::pipx",
+        "brew::awscli",
+        "pipx::pgcli",
+        "pipx::poetry",
+        "pipx::litecli",
     ]
 
 
 """
 TODO:
+- vscode
 - fuzzy search command history
 - raycast scripts?
     is there a way to make them more interactive?
-- pgcli / litecli / awscli
-- git / gh
 - nvim
 - hammerspoon?
 - shortcuts/keybindings help depending on the active window?

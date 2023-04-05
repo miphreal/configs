@@ -9,10 +9,11 @@ yabai -m config focus_follows_mouse autoraise
 yabai -m config window_topmost on
 
 # Per App configs
-yabai -m rule --add label=sys-pref app="^System" manage=off layer=above
-yabai -m rule --add label=sys-pref app="^Notes" manage=off layer=above
-yabai -m rule --add label=sys-pref app="^Raycast" manage=off layer=above
-yabai -m rule --add label=sys-pref app="Microsoft Teams" manage=off layer=above
+yabai -m rule --add app="^System" manage=off layer=above
+yabai -m rule --add app="^Notes" manage=off layer=above
+yabai -m rule --add app="^Raycast" manage=off layer=above
+yabai -m rule --add app="Microsoft Teams" manage=off layer=above
+yabai -m rule --add app="Karabiner" manage=off layer=above
 
 # Appearance
 yabai -m config top_padding                  0

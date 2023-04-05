@@ -1,6 +1,10 @@
 # In order not to be disturbed by Ctrl-S ctrl-Q in terminals
 stty -ixon
 
+# Ensure path arrays do not contain duplicates.
+typeset -gU cdpath fpath mailpath path
+
+
 {{ dep('../brew').zsh_profile }}
 
 {{ dep('../fig').zsh_profile }}

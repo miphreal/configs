@@ -3,6 +3,7 @@ import platform
 
 CONFCTL_RESOLVERS = [
     "confctl.contrib.pyenv.setup",
+    "confctl.contrib.pipx.setup",
     "confctl.contrib.homebrew.setup",
 ]
 
