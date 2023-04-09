@@ -14,6 +14,8 @@ yabai -m rule --add app="^Notes" manage=off layer=above
 yabai -m rule --add app="^Raycast" manage=off layer=above
 yabai -m rule --add app="Microsoft Teams" manage=off layer=above
 yabai -m rule --add app="Karabiner" manage=off layer=above
+yabai -m rule --add app="IINA" manage=off layer=above
+yabai -m rule --add app="VLC" manage=off layer=above
 
 # Appearance
 yabai -m config top_padding                  0

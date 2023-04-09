@@ -22,6 +22,9 @@ def common(conf):
         "pipx::pgcli",
         "pipx::poetry",
         "pipx::litecli",
+
+        "brew::youtube-dl",
+        "pipx::yt-dlp",
     ]
 
 
@@ -51,7 +54,6 @@ Can triggier from console:
 Can manage hotkeys/keybindings:
 - raycast for available commands
 - karabiner to redefine keys; trigger any command
-    generate conf via python
 
 
 

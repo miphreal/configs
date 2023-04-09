@@ -2,7 +2,7 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 add_newline = false
-#format = '$status$all'
+format = '''$status$cmd_duration$all'''
 
 [character]
 success_symbol = '[➜](bold green)'
@@ -17,4 +17,12 @@ fish_style_pwd_dir_length = 1
 [status]
 disabled = false
 recognize_signal_code = false
-format = '[\[$status\]]($style) '
+style = 'italic dimmed red'
+format = '''[╰─ exitcode: $status]($style)
+'''
+
+[cmd_duration]
+min_time = 10_000
+style = 'italic dimmed 240'
+format = '''[╰─ took: $duration]($style)
+'''

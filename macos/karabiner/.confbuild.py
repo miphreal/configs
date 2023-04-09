@@ -63,6 +63,10 @@ key_sets = dict(
 
 def key(k: str):
     k = k.lower().strip()
+    if k.startswith("lang:"):
+        lang = k[5:]
+        return {"select_input_source": {"language": f"^{lang}$"}}
+
     for n, k_set in key_sets.items():
         if k in k_set:
             return {n: k}
@@ -256,6 +260,10 @@ karabiner_conf = {
                 rule("caps_lock ?any -right_shift", "left_control", to_if_alone=[key("escape")]),
                 # Caps Lock + Right Shift -> toggle Caps Lock
                 rule("caps_lock right_shift", "caps_lock"),
+                # Switch to certain languages
+                rule("r right_command", "lang:ru"),
+                rule("e right_command", "lang:en"),
+                rule("p right_command", "lang:pl"),
             ],
         ),
     ],

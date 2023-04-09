@@ -101,10 +101,10 @@
                                     "key_code": "caps_lock",
                                     "modifiers": {
                                         "optional": [
+                                            "option",
+                                            "control",
                                             "left_shift",
                                             "fn",
-                                            "control",
-                                            "option",
                                             "command"
                                         ]
                                     }
@@ -133,6 +133,60 @@
                                 "to": [
                                     {
                                         "key_code": "caps_lock"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "r",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "right_command"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "select_input_source": {
+                                            "language": "^ru$"
+                                        }
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "e",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "right_command"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "select_input_source": {
+                                            "language": "^en$"
+                                        }
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "p",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "right_command"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "select_input_source": {
+                                            "language": "^pl$"
+                                        }
                                     }
                                 ],
                                 "type": "basic"
