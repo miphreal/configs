@@ -13,38 +13,48 @@ MODIFIER_GROUPS = {
     "any": {"fn", "command", "control", "option", "shift"},
 }
 KEY_ALIASES = {
-    "left_option": {"left_alt"},
-    "right_option": {"right_alt"},
-    "left_command": {"left_gui"},
-    "right_command": {"right_gui"},
+    "cmd": "command",
+    "left_alt": "left_option",
+    "right_alt": "right_option",
+    "left_gui": "left_command",
+    "right_gui": "right_command",
 }
 
-def replace_aliases(keys: set[str]):
-    cleared = keys.copy()
-    for key, aliases in KEY_ALIASES.items():
-        if keys & aliases:
-            cleared -= aliases
-            cleared.add(key)
-    return cleared
+def uniq(keys: t.Iterable[str]):
+    _index: set[str] = set()
+    for k in keys:
+        if k not in _index:
+            _index.add(k)
+            yield k
+
+
+def replace_aliases(keys: t.Iterable[str]):
+    for k in keys:
+        yield KEY_ALIASES.get(k, k)
         
 
-def expand_modifiers(modifiers: set[str]):
-    expanded = replace_aliases(modifiers)
+def expand_modifiers(modifiers: t.Iterable[str]):
+    expanded = list(uniq(replace_aliases(modifiers)))
     for short_name, group in reversed(MODIFIER_GROUPS.items()):
         if short_name in expanded:
-            expanded.remove(short_name)
-            expanded.update(group)
+            idx = expanded.index(short_name)
+            expanded[idx: idx + 1] = group
     return expanded
 
 
-def reduce_modifiers(modifiers: set[str]):
+def reduce_modifiers(modifiers: list[str]):
     reduced = modifiers.copy()
+
     for short_name, group in MODIFIER_GROUPS.items():
-        if  group.issubset(reduced):
-            reduced -= group
-            reduced.add(short_name)
+        if group.issubset(reduced):
+            idx = min(reduced.index(k) for k in group)
+            for k in group:
+                reduced.remove(k)
+            reduced[idx:idx] = [short_name]
+
     if "any" in reduced:
-        return {"any"}
+        return ["any"]
+
     return reduced
 
         
@@ -63,10 +73,6 @@ key_sets = dict(
 
 def key(k: str):
     k = k.lower().strip()
-    if k.startswith("lang:"):
-        lang = k[5:]
-        return {"select_input_source": {"language": f"^{lang}$"}}
-
     for n, k_set in key_sets.items():
         if k in k_set:
             return {n: k}
@@ -90,70 +96,70 @@ def is_simple_rule(data: dict):
 
 
 def rule_from_def(from_: str, simul_opts: dict | None = None):
-    from_modifiers = set()
-    from_opt_modifiers = set()
-
-    from_, _, simul = from_.partition("||") 
-
-    key_combination = from_.split() 
-    from_key = None
-
+    keys: list[str] = []
+    modifiers: list[str] = []
+    optional_modifiers: list[str] = []
     exclude_modifiers = set()
-    
-    for k in key_combination:
+
+    for k in from_.split() :
         optional = '?' in k
         exclude = k.startswith('-')
         k = k.replace('?', '').replace('-', '').strip()
-        if exclude and k in MODIFIERS:
-            exclude_modifiers.add(k)
-        elif exclude:
-            raise Exception(f"Cannot exclude non-modifiers: {k}")
-        elif k in MODIFIERS:
-            if optional:
-                from_opt_modifiers.add(k)
-            elif from_key is None:
-                from_key = k
+
+        if (exclude or optional) and k not in MODIFIERS:
+            raise Exception(f"{k} must be a modifier")
+
+        if k in MODIFIERS:
+            if exclude:
+                exclude_modifiers.add(k)
+            elif optional:
+                optional_modifiers.append(k)
             else:
-                from_modifiers.add(k)
+                modifiers.append(k)
         else:
-            from_key = k
+            keys.append(k)
+
+    modifiers = expand_modifiers(modifiers)
+    optional_modifiers = expand_modifiers(optional_modifiers)
 
     if exclude_modifiers:
         exclude_modifiers = expand_modifiers(exclude_modifiers)
         assert 'any' not in exclude_modifiers
+        modifiers = [k for k in modifiers if k not in exclude_modifiers]
+        optional_modifiers = [k for k in optional_modifiers if k not in exclude_modifiers]
 
-        from_modifiers = expand_modifiers(from_modifiers)
-        from_opt_modifiers = expand_modifiers(from_opt_modifiers)
+    modifiers = reduce_modifiers(modifiers)
+    optional_modifiers = reduce_modifiers(optional_modifiers)
 
-        from_modifiers -= exclude_modifiers
-        from_opt_modifiers -= exclude_modifiers
+    from_def: dict[str, t.Any] = {}
 
-        from_modifiers = reduce_modifiers(from_modifiers)
-        from_opt_modifiers = reduce_modifiers(from_opt_modifiers)
+    special_any_keys = {"key_code", "consumer_key_code", "pointing_button"}
+    regular_keys = [k for k in keys if k not in special_any_keys]
+    any_keys = [k for k in keys if k in special_any_keys]
 
-    simultaneous_keys = []
-    if simul.strip():
-        simultaneous_keys = [key(k) for k in simul.split()]
+    if regular_keys and any_keys:
+        raise Exception(f"Please specify either 'any' or regular keys, not both")
+    if len(any_keys) > 1:
+        raise Exception("Please specify single 'any' key")
 
-    from_def: dict[str, t.Any]
-
-    if from_key in {"key_code", "consumer_key_code", "pointing_button"}:
-        from_def = {"any": from_key}
-    elif from_key:
-        from_def = key(from_key)
+    if len(regular_keys) == 1:
+        from_def.update(key(regular_keys[0]))
+    elif len(regular_keys) > 1:
+        from_def["simultaneous"] = [key(k) for k in regular_keys]
+    elif any_keys:
+        from_def["any"] = any_keys[0]
+    elif modifiers:
+        # only modifiers are defined
+        first_modifier = modifiers.pop(0)
+        from_def.update(key(first_modifier))
     else:
-        raise Exception(f"Incorrect {from_} sorce key definition")
+        raise Exception(f"Invalid spec: {from_}")
 
-    assert list(from_def.keys())[0] in {"key_code", "consumer_key_code", "pointing_button", "any"}
-
-    if from_modifiers:
-        from_def["modifiers"] = {"mandatory": list(from_modifiers)}
-    if from_opt_modifiers:
+    if modifiers:
+        from_def["modifiers"] = {"mandatory": sorted(modifiers)}
+    if optional_modifiers:
         from_def.setdefault("modifiers", {})
-        from_def["modifiers"]["optional"] = list(from_opt_modifiers)
-
-    if simultaneous_keys:
-        from_def["simultaneous"] = simultaneous_keys
+        from_def["modifiers"]["optional"] = sorted(optional_modifiers)
 
     if simul_opts:
         from_def["simultaneous_options"] = simul_opts
@@ -161,16 +167,169 @@ def rule_from_def(from_: str, simul_opts: dict | None = None):
     return from_def
 
 
+def set_var(name: str, value: str | int | bool):
+    return {"set_variable": {"name": name, "value": value}}
 
-def rule(from_: str, to_: t.Any = None, from_simul_opts: dict | None = None, **to_opts):
+def set_lang(lang_code: str):
+    return {"select_input_source": {"language": f"^{lang_code}$"}}
+
+def to_sh(command: str):
+    return {"shell_command": command}
+
+def to_notification(id: str, msg: str):
+    return {"set_notification_message": {"id": id, "text": msg}}
+
+def parse_val(val: str):
+    match val:
+        case bool_val if bool_val.lower() in {'true', 'false', 'on', 'off'}:
+            return bool_val.lower() in {'true', 'on'}
+        case int_val if int_val.isdigit():
+            return int(int_val)
+        case str_val:
+            return str_val
+
+
+def parse_to_def(to_: str) -> dict:
+    to_ = to_.strip()
+    to_def = {}
+
+    to_events = []
+    to_if_alone = []
+    to_if_held_down = []
+
+    to_after_key_up = []
+
+    to_specs = to_.split(';')
+    for spec in to_specs:
+        _to_events = to_events
+        spec = spec.strip()
+
+        if spec.startswith('on-held->'):
+            _to_events = to_if_held_down
+            spec = spec.removeprefix('on-held->')
+        elif spec.startswith('on-alone->'):
+            _to_events = to_if_alone
+            spec = spec.removeprefix('on-alone->')
+        elif spec.startswith('on-keyup->'):
+            _to_events = to_after_key_up
+            spec = spec.removeprefix('on-keyup->')
+        elif spec.startswith('on-keydown->'):
+            _to_events = to_events
+            spec = spec.removeprefix('on-keydown->')
+
+        if spec.startswith('$'):
+            # handle setting variables
+            spec = spec.removeprefix('$').split('=', 1)
+            match spec:
+                case [var] if var:
+                    val = False if var.endswith('!') else True
+                    _to_events.append(set_var(var, val))
+
+                case [var, val]:
+                    if '/' in val:
+                        val_set, val_unset = val.split('/', 1)
+                        _to_events.append(set_var(var, parse_val(val_set)))
+                        to_after_key_up.append(set_var(var, parse_val(val_unset)))
+                    else:
+                        _to_events.append(set_var(var, parse_val(val)))
+
+                case _:
+                    raise Exception(f"Unsupported 'to' spec: {spec}")
+
+        elif spec.startswith('lang:'):
+            # handle selecting input source
+            _to_events.append(set_lang(spec[5:]))
+
+        elif spec.startswith('sh:'):
+            # handle sh command target
+            _to_events.append(to_sh(spec[3:]))
+
+        elif spec.startswith('notify:'):
+            # show notification
+            _, msg_id, msg = spec.split(':')
+            _to_events.append(to_notification(msg_id, msg))
+
+        else:
+            _to_events.append(key(spec))
+
+    if to_events:
+        to_def['to'] = to_events
+    if to_if_alone:
+        to_def['to_if_alone'] = to_if_alone
+    if to_if_held_down:
+        to_def['to_if_held_down'] = to_if_held_down
+    if to_after_key_up:
+        to_def['to_after_key_up'] = to_after_key_up
+
+    return to_def
+
+
+def parse_conditions(cond_: str):
+    conditions = []
+
+    for spec in cond_.split(','):
+        spec = spec.strip()
+
+        neg = spec.startswith('!')
+        spec.removeprefix('!')
+
+        if spec.startswith('$'):
+            # condition with var
+            spec = spec.removeprefix('$')
+            match spec.split('=', 1):
+                case [var]:
+                    val = True
+                case [var, val]:
+                    val = parse_val(val)
+                case _:
+                    raise Exception(f"Unsupported condition: {spec}")
+
+            conditions.append({"type": 'variable_unless' if neg else 'variable_if', "name": var, "value": val})
+
+        elif spec.startswith('lang=') or spec in {'en', 'ru', 'pl', 'by'}:
+            # language condition
+            spec.removeprefix('lang=')
+            langs = spec.split('|')
+            conditions.append({"type": 'input_source_unless' if neg else 'input_source_if', "input_sources": [{"language": f"^{l}$"} for l in langs]})
+
+        elif spec.startswith('app=') or spec.startswith('^') and spec.endswith('$'):
+            # app condition
+            conditions.append({"type": 'frontmost_application_unless' if neg else 'frontmost_application_if', "bundle_identifiers": [spec[4:]]})
+
+    return conditions
+
+
+
+def rule(def_: str, to_: t.Any = None, from_simul_opts: dict | None = None, **opts):
+    rule_def = {}
+
+    if '=>' in def_:
+        assert to_ is None
+        from_, to_ = def_.split('=>', 1)
+        from_ = from_.strip()
+        to_ = to_.strip()
+    else:
+        from_ = def_
+
+    if ':' in from_:
+        conditions_, from_ = from_.split(':')
+        from_ = from_.strip()
+        if parsed := parse_conditions(conditions_):
+            rule_def['conditions'] = parsed
+
     from_def = rule_from_def(from_, simul_opts=from_simul_opts)
-
-    if  len(from_def) == 1 and isinstance(to_, str):
-        return {"from": from_def, "to": [key(to_)]}
+    rule_def['from'] = from_def
 
     if isinstance(to_, str):
-        to_opts['to'] = [key(to_)]
-    return {"type": "basic", "from": from_def, **to_opts}
+        rule_def.update(parse_to_def(to_))
+
+    rule_def.update(opts)
+
+    if len(rule_def) == 2 and len(rule_def["from"]) == 1 and len(rule_def.get('to', [])) == 1:
+        # it's a simple definition
+        return rule_def
+        
+    return {"type": "basic", **rule_def}
 
 
 def virtual_hid_keyboard():
@@ -221,6 +380,15 @@ def profile(name: str, rules = None, selected = False, **params):
         }
     }
 
+def parse_profile(name: str, rules: str, **params):
+    parsed_rules = []
+    for rule_spec in rules.splitlines():
+        rule_spec = rule_spec.strip()
+        if rule_spec.startswith('#'):
+            continue
+        if rule_spec:
+            parsed_rules.append(rule(rule_spec))
+    return profile(name, rules=parsed_rules, **params)
 
 
 karabiner_conf = {
@@ -232,39 +400,44 @@ karabiner_conf = {
         "unsafe_ui": False,
     },
     "profiles": [
-        profile(
+        parse_profile(
             "Default",
             selected=True,
-            rules=[
+            rules="""
                 # Simple remaps
-                rule("non_us_backslash", "grave_accent_and_tilde"),
+                non_us_backslash => grave_accent_and_tilde
+
                 # Fn keys
-                rule("f1", "display_brightness_decrement"),
-                rule("f2", "display_brightness_increment"),
-                rule("f3", "mission_control"),
-                rule("f4", "spotlight"),
-                rule("f5", "illumination_down"),
-                rule("f6", "illumination_up"),
-                rule("f7", "rewind"),
-                rule("f8", "play_or_pause"),
-                rule("f9", "fast_forward"),
-                rule("f10", "mute"),
-                rule("f11", "volume_decrement"),
-                rule("f12", "volume_increment"),
+                f1 => display_brightness_decrement
+                f2 => display_brightness_increment
+                f3 => mission_control
+                f4 => spotlight
+                f5 => illumination_down
+                f6 => illumination_up
+                f7 => rewind
+                f8 => play_or_pause
+                f9 => fast_forward
+                f10 => mute
+                f11 => volume_decrement
+                f12 => volume_increment
+                
                 # Complex rules
-                rule("h left_control ?any", "left_arrow"),
-                rule("j left_control ?any", "down_arrow"),
-                rule("k left_control ?any", "up_arrow"),
-                rule("l left_control ?any", "right_arrow"),
-                # Caps Lock -> Ctrl or Esc (if pressed alone)
-                rule("caps_lock ?any -right_shift", "left_control", to_if_alone=[key("escape")]),
-                # Caps Lock + Right Shift -> toggle Caps Lock
-                rule("caps_lock right_shift", "caps_lock"),
+                h left_control ?any => left_arrow
+                j left_control ?any => down_arrow
+                k left_control ?any => up_arrow
+                l left_control ?any => right_arrow
+
+                # Caps Lock => Ctrl or Esc (if pressed alone)
+                caps_lock ?any -right_shift => left_control; on-alone->escape
+                # Caps Lock + Right Shift => toggle Caps Lock
+                caps_lock right_shift => caps_lock
+
                 # Switch to certain languages
-                rule("r right_command", "lang:ru"),
-                rule("e right_command", "lang:en"),
-                rule("p right_command", "lang:pl"),
-            ],
+                fn l => $lang_mode=on/off
+                    $lang_mode=on: e ?any => lang:en
+                    $lang_mode=on: r ?any => lang:ru
+                    $lang_mode=on: p ?any => lang:pl
+            """,
         ),
     ],
 }

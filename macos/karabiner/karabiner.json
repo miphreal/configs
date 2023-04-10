@@ -101,11 +101,11 @@
                                     "key_code": "caps_lock",
                                     "modifiers": {
                                         "optional": [
-                                            "option",
+                                            "command",
                                             "control",
-                                            "left_shift",
                                             "fn",
-                                            "command"
+                                            "left_shift",
+                                            "option"
                                         ]
                                     }
                                 },
@@ -139,28 +139,44 @@
                             },
                             {
                                 "from": {
-                                    "key_code": "r",
+                                    "key_code": "l",
                                     "modifiers": {
                                         "mandatory": [
-                                            "right_command"
+                                            "fn"
                                         ]
                                     }
                                 },
                                 "to": [
                                     {
-                                        "select_input_source": {
-                                            "language": "^ru$"
+                                        "set_variable": {
+                                            "name": "lang_mode",
+                                            "value": true
+                                        }
+                                    }
+                                ],
+                                "to_after_key_up": [
+                                    {
+                                        "set_variable": {
+                                            "name": "lang_mode",
+                                            "value": false
                                         }
                                     }
                                 ],
                                 "type": "basic"
                             },
                             {
+                                "conditions": [
+                                    {
+                                        "name": "lang_mode",
+                                        "type": "variable_if",
+                                        "value": true
+                                    }
+                                ],
                                 "from": {
                                     "key_code": "e",
                                     "modifiers": {
-                                        "mandatory": [
-                                            "right_command"
+                                        "optional": [
+                                            "any"
                                         ]
                                     }
                                 },
@@ -174,11 +190,43 @@
                                 "type": "basic"
                             },
                             {
+                                "conditions": [
+                                    {
+                                        "name": "lang_mode",
+                                        "type": "variable_if",
+                                        "value": true
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "r",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "select_input_source": {
+                                            "language": "^ru$"
+                                        }
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "lang_mode",
+                                        "type": "variable_if",
+                                        "value": true
+                                    }
+                                ],
                                 "from": {
                                     "key_code": "p",
                                     "modifiers": {
-                                        "mandatory": [
-                                            "right_command"
+                                        "optional": [
+                                            "any"
                                         ]
                                     }
                                 },
