@@ -3,6 +3,9 @@ def git(conf):
         'brew::git', 
         'brew::gh',
         'brew::gnupg',
+        # Experiment with
+        'brew::gitui',
+        'brew::lazygit',
     ]
     conf(
         name="Evgeny Lychkovsky",
