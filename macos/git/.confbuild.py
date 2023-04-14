@@ -1,11 +1,10 @@
 def git(conf):
     conf[
         'brew::git', 
+        'brew::git-lfs',
         'brew::gh',
         'brew::gnupg',
-        # Experiment with
-        'brew::gitui',
-        'brew::lazygit',
+        ':lazygit',
     ]
     conf(
         name="Evgeny Lychkovsky",
@@ -15,3 +14,10 @@ def git(conf):
     )
     conf.render('.gitconfig.j2', conf.config)
 
+
+def lazygit(conf):
+    conf['brew::lazygit']
+    conf(
+        lazygit_config=conf['path::~/Library/Application Support/lazygit/config.yml'],
+    )
+    conf.render('lazygit_config.yml.j2', conf.lazygit_config)

@@ -1,10 +1,13 @@
-{{ dep('../fig').zsh_rc.pre }}
-
-# ZLE configuration
-# * History search
+# history
 autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
+function remove-from-history {
+    echo "Removing $1 from history..."
+    LC_ALL=C test $1 && sed -i "/$1/d" $HISTFILE
+    fc -R
+    zsh
+}
 
 # ssh
 (eval "$(ssh-agent -s)") > /dev/null
@@ -16,11 +19,28 @@ alias ls=exa
 alias ll='exa -la'
 
 # git
-alias gits='git status'
+alias gitst='git status -sb'
+alias gitcb='git rev-parse --symbolic-full-name --abbrev-ref HEAD'
+alias gitc='lazygit'
+alias gitco='git checkout'
+alias gitb='git branch'
+function gitlb(){
+    git for-each-ref --format='%(refname:short)' --sort=-authordate --count=10 refs/heads/;
+}
+alias git-count='git shortlog -sn'
+alias git-undo='git reset --soft HEAD^'
+alias git-clear='git reset --hard HEAD'
+alias gits='git stash'
+alias gitsb='git checkout $(git branch | fzf)'
+alias git-push='git push origin $(gitcb)'
+alias git-pull='git pull origin $(gitcb)'
+
+# containers
+alias dkc='docker-compose'
+
+
 
 
 {{ dep('../nvm').zsh_rc }}
 {{ dep('../pyenv').zsh_rc }}
 {{ dep('../starship').zsh_rc }}
-
-{{ dep('../fig').zsh_rc.post }}

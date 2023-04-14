@@ -16,19 +16,16 @@ yabai -m rule --add app="Microsoft Teams" manage=off layer=above
 yabai -m rule --add app="Karabiner" manage=off layer=above
 yabai -m rule --add app="IINA" manage=off layer=above
 yabai -m rule --add app="VLC" manage=off layer=above
-
-# Appearance
-yabai -m config top_padding                  0
-yabai -m config bottom_padding               0
-yabai -m config left_padding                 0
-yabai -m config right_padding                0
-yabai -m config window_gap                   0
+# - everything is floating by default
+yabai -m rule --add app=".*" manage=off layer=above
 
 # Spaces configuration
 yabai -m space 1 --layout stack --label browse
-yabai -m space 2 --layout bsp --label dev
+yabai -m space 2 --layout stack --label dev
 yabai -m space 3 --layout stack --label productivity
 yabai -m space 4 --layout bsp --label tmp-focus
 yabai -m space 5 --layout stack --label messagers
 yabai -m space 6 --layout float --label other
 
+
+# TODO: https://github.com/koekeishiya/yabai/wiki/Configuration#mouse-support

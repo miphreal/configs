@@ -17,6 +17,8 @@ def common(conf):
     conf[
         "brew::exa",
         "brew::fzf",
+        "brew::jq",
+        "brew::yq",
         "brew::pipx",
         "brew::awscli",
         "pipx::pgcli",
