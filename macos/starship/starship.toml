@@ -26,3 +26,9 @@ min_time = 10_000
 style = 'italic dimmed 240'
 format = '''[╰─ took: $duration]($style)
 '''
+
+[python]
+style = 'italic dimmed green'
+pyenv_prefix = ''
+symbol = '🐍'
+pyenv_version_name = true
