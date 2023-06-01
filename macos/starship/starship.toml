@@ -32,3 +32,8 @@ style = 'italic dimmed green'
 pyenv_prefix = ''
 symbol = '🐍'
 pyenv_version_name = true
+
+[env_var.ENVRC_PROMPT]
+variable = 'ENVRC_PROMPT'
+style = 'italic dimmed 153'
+format = '[$env_value]($style) '

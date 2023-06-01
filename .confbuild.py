@@ -24,9 +24,9 @@ terminal = dict(
     font_size=12,
 )
 
+
 def main(conf):
     if is_macos:
-        conf.dep('macos')
+        conf["macos"]
     elif is_linux:
-        conf.dep('linux')
-
+        conf["linux"]

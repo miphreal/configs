@@ -1,3 +1,31 @@
+DIRENV_ZSH_RC = """
+##
+# Direnv shell integration
+eval "$(direnv hook zsh)"
+"""
+
+ASDF_ZSH_RC = """
+##
+# `asdf` tool
+#
+. "$HOME/.asdf/asdf.sh"
+# append completions to fpath
+fpath=(${ASDF_DIR}/completions $fpath)
+"""
+
+BW_ZSH_RC = """
+##
+# `bitwarden` tool
+secrets-unlock() {
+    security add-generic-password -a "$(whoami)" -s "bw/session" -w "$(bw unlock --raw)" -U
+}
+get-secret() {
+    session=$(security find-generic-password -a "$(whoami)" -s "bw/session" -w)
+    bw --session "${session}" get notes $1
+}
+"""
+
+
 def macos(conf):
     conf[
         ':common',
@@ -10,24 +38,18 @@ def macos(conf):
         './nvm',
         './pyenv',
         './zsh',
-        ':direnv',
     ]
 
-DIRENV_ZSH_RC = """
-# Direnv shell integration
-eval "$(direnv hook zsh)"
-"""
+
+def bitwarden(conf):
+    conf(zsh_rc=BW_ZSH_RC)
+    conf["brew::bitwarden-cli"]
+
 
 def direnv(conf):
     conf(zsh_rc=DIRENV_ZSH_RC)
-    # conf['./zsh'] <<= conf(zsh_rc=DIRENV_ZSH_RC)
     conf["brew::direnv"]
 
-ASDF_ZSH_RC = """
-. "$HOME/.asdf/asdf.sh"
-# append completions to fpath
-fpath=(${ASDF_DIR}/completions $fpath)
-"""
 
 def asdf(conf):
     conf(zsh_rc=ASDF_ZSH_RC)
@@ -63,7 +85,7 @@ TODO:
     is there a way to make them more interactive?
 - nvim
     - tree view
-    - lazygit or neogit?
+    - lazygit
 - hammerspoon?
 - shortcuts/keybindings help depending on the active window?
 
