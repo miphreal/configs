@@ -299,7 +299,7 @@ detect_urls yes
 #: URLs under the mouse cursor. By default, all characters legal in
 #: URLs are allowed.
 
-# copy_on_select no
+copy_on_select yes
 
 #: Copy to clipboard or a private buffer on select. With this set to
 #: clipboard, simply selecting text with the mouse will cause the text
@@ -477,12 +477,12 @@ enable_audio_bell no
 #: Visual bell duration. Flash the screen when a bell occurs for the
 #: specified number of seconds. Set to zero to disable.
 
-# window_alert_on_bell yes
+window_alert_on_bell yes
 
 #: Request window attention on bell. Makes the dock icon bounce on
 #: macOS or the taskbar flash on linux.
 
-# bell_on_tab yes
+bell_on_tab yes
 
 #: Show a bell symbol on the tab if a bell occurs in one of the
 #: windows in the tab and the window is not the currently focused
@@ -632,7 +632,15 @@ hide_window_decorations yes
 
 #: Tab bar [[[
 
-# tab_bar_edge bottom
+tab_bar_margin_width      3
+tab_bar_margin_height     3 3
+tab_bar_style             separator
+tab_bar_min_tabs          1
+tab_separator             ""
+tab_title_template        "{fmt.fg._5c6370}{fmt.bg.default}{fmt.fg._abb2bf}{fmt.bg._5c6370}{index}: {title}{fmt.fg._5c6370}{fmt.bg.default} "
+active_tab_title_template "{fmt.fg._e5c07b}{fmt.bg.default}{fmt.fg._282c34}{fmt.bg._e5c07b}{index}: {title}{fmt.fg._e5c07b}{fmt.bg.default} "
+
+tab_bar_edge top
 
 #: Which edge to show the tab bar on, top or bottom
 
@@ -647,7 +655,7 @@ hide_window_decorations yes
 #: the second number is the margin between the tab bar and the
 #: contents of the current tab.
 
-# tab_bar_style fade
+# tab_bar_style custom
 
 #: The tab bar style, can be one of: fade, separator, powerline, or
 #: hidden. In the fade style, each tab's edges fade into the
@@ -1056,7 +1064,7 @@ macos_titlebar_color system
 #: 0.75 will result in rendering that looks similar to sub-pixel
 #: antialiasing at common font sizes.
 
-# macos_traditional_fullscreen no
+macos_traditional_fullscreen yes
 
 #: Use the traditional full-screen transition, that is faster, but
 #: less pretty.
