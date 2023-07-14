@@ -27,11 +27,13 @@ def uniq(keys: t.Iterable[str]):
             _index.add(k)
             yield k
 
+def replace_alias(key: str):
+    return KEY_ALIASES.get(key, key)
 
 def replace_aliases(keys: t.Iterable[str]):
     for k in keys:
-        yield KEY_ALIASES.get(k, k)
-        
+        yield replace_alias(k)
+
 
 def expand_modifiers(modifiers: t.Iterable[str]):
     expanded = list(uniq(replace_aliases(modifiers)))
@@ -57,7 +59,7 @@ def reduce_modifiers(modifiers: list[str]):
 
     return reduced
 
-        
+
 
 key_sets = dict(
     apple_vendor_keyboard_key_code = ["mission_control", "spotlight", "dashboard", "function", "launchpad", "expose_all", "expose_desktop", "brightness_up", "brightness_down", "language"],
@@ -104,7 +106,7 @@ def rule_from_def(from_: str, simul_opts: dict | None = None):
     for k in from_.split() :
         optional = '?' in k
         exclude = k.startswith('-')
-        k = k.replace('?', '').replace('-', '').strip()
+        k = replace_alias(k.replace('?', '').replace('-', '').strip())
 
         if (exclude or optional) and k not in MODIFIERS:
             raise Exception(f"{k} must be a modifier")
@@ -271,7 +273,7 @@ def parse_conditions(cond_: str):
         spec = spec.strip()
 
         neg = spec.startswith('!')
-        spec.removeprefix('!')
+        spec = spec.removeprefix('!')
 
         if spec.startswith('$'):
             # condition with var
@@ -328,7 +330,7 @@ def rule(def_: str, to_: t.Any = None, from_simul_opts: dict | None = None, **op
     if len(rule_def) == 2 and len(rule_def["from"]) == 1 and len(rule_def.get('to', [])) == 1:
         # it's a simple definition
         return rule_def
-        
+
     return {"type": "basic", **rule_def}
 
 
@@ -365,7 +367,7 @@ def profile(name: str, rules = None, selected = False, **params):
                 "basic.to_if_held_down_threshold_milliseconds": 500,
                 "mouse_motion_to_scroll.speed": 100
             },
-            "rules": [ 
+            "rules": [
                 {
                     "description": "Custom complex rules",
                     "manipulators": complex_rules or [],
@@ -420,20 +422,23 @@ karabiner_conf = {
                 f10 => mute
                 f11 => volume_decrement
                 f12 => volume_increment
-                
+
                 # Complex rules
-                h left_control ?any => left_arrow
-                j left_control ?any => down_arrow
-                k left_control ?any => up_arrow
-                l left_control ?any => right_arrow
+                !$vim_mode=on: cmd option v => $vim_mode=on
+                 $vim_mode=on: cmd option v => $vim_mode=off
+                    $vim_mode=on: h left_control => left_arrow
+                    $vim_mode=on: j left_control => down_arrow
+                    $vim_mode=on: k left_control => up_arrow
+                    $vim_mode=on: l left_control => right_arrow
 
                 # Caps Lock => Ctrl or Esc (if pressed alone)
-                caps_lock ?any -right_shift => left_control; on-alone->escape
+                caps_lock ?any -right_shift -cmd => left_control; on-alone->escape
+
                 # Caps Lock + Right Shift => toggle Caps Lock
                 caps_lock right_shift => caps_lock
 
                 # Switch to certain languages
-                fn l => $lang_mode=on/off
+                cmd option l => $lang_mode=on/off
                     $lang_mode=on: e ?any => lang:en
                     $lang_mode=on: r ?any => lang:ru
                     $lang_mode=on: p ?any => lang:pl
