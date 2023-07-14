@@ -63,7 +63,9 @@ def common(conf):
         "brew::jq",
         "brew::yq",
         "brew::pipx",  # todo: install pipx directly to not depend on homebrew python
-        
+
+        "brew::trash",  # cli tool to move files to MacOS trash
+
         "brew::awscli",
 
         "brew::circleci",
