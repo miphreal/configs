@@ -1,19 +1,18 @@
 # History command configuration
+HISTFILE=~/.zsh_history
 HISTSIZE=50000
-SAVEHIST=10000
+SAVEHIST=50000
 setopt extended_history       # record timestamp of command in HISTFILE
 setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
 setopt hist_ignore_dups       # ignore duplicated commands history list
+setopt hist_ignore_all_dups   # old dupes are deleted
 setopt hist_ignore_space      # ignore commands that start with space
 setopt hist_verify            # show command with history expansion to user before running it
 setopt share_history          # share command history data
-setopt append_history           
+setopt append_history
 setopt hist_find_no_dups
 setopt hist_reduce_blanks
-
-# Correction
-setopt correct
-setopt correct_all
+setopt inc_append_history     # immediately append to history file
 
 # Directories
 setopt auto_cd
@@ -28,18 +27,25 @@ setopt long_list_jobs       # show long list format job notifications
 setopt interactivecomments  # recognize comments
 
 
-# config for zsh-history-substring-search
-bindkey '^K' history-substring-search-up
-bindkey '^J' history-substring-search-down
+# Filter our sensitive content from history
+HISTORY_FILTER_EXCLUDE=(_key token access bearer security password session)
+function _history_filter() {
+  local cmd="${1,,}"
+  local warning="\033[36;2m\033[36;3m🛡️skipping history for this command.\033[0m\n"
+  local pattern
+  for pattern in $HISTORY_FILTER_EXCLUDE; do
+    if [[ "$cmd" = *"$pattern"* ]]; then
+      [[ -z "$HISTORY_FILTER_SILENT" ]] && (>&2 printf "$warning")
+      return 1
+    fi
+  done
+  return 0
+}
+autoload -Uz add-zsh-hook
+add-zsh-hook zshaddhistory _history_filter
+##
 
-# config for zsh-autosuggestions
-bindkey '^L' autosuggest-execute
 
-
-# history
-autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
-zle -N up-line-or-beginning-search
-zle -N down-line-or-beginning-search
 function remove-from-history {
     echo "Removing $1 from history..."
     LC_ALL=C test $1 && sed -i "/$1/d" $HISTFILE
@@ -59,8 +65,8 @@ fi
 alias ssh="kitty +kitten ssh"
 
 # ls
-alias -g ls=exa
-alias -g ll='exa -la'
+alias ls=exa
+alias ll='exa -la'
 
 # git
 alias gitst='git status -sb'
@@ -93,25 +99,62 @@ export PATH="/usr/local/go/bin:$HOME/go/bin:$PATH"
 
 {{ dep('../nvm').zsh_rc }}
 {{ dep('../pyenv').zsh_rc }}
+{{ dep('../kitty').zsh_rc }}
+{{ dep('../starship').zsh_rc }}
+{{ dep('macos:asdf').zsh_rc }}
 
-##
-# Kitty integration
-if test -n "$KITTY_INSTALLATION_DIR"; then
-    export KITTY_SHELL_INTEGRATION="enabled"
-    autoload -Uz -- "$KITTY_INSTALLATION_DIR"/shell-integration/zsh/kitty-integration
-    kitty-integration
-    unfunction kitty-integration
-fi
 
 ##
 # envrc-tools
 source ~/Develop/playground/envrc-tools/envrc.sh; envrc hook zsh
 
-{{ dep('../starship').zsh_rc }}
 
-{{ dep('macos:asdf').zsh_rc }}
-{{ dep('macos:bitwarden').zsh_rc }}
+##
+# Secrets
+function st-get() {
+  local secret_name="$1"
+  local secret="$(security find-generic-password -a "$(whoami)" -s "st:${secret_name}" -w 2>/dev/null)"
+  echo $secret
+}
+function st-set() {
+  (
+    set -e
+    local secret_name="$1"
+    local secret="$2"
+    security delete-generic-password -a "$(whoami)" -s "st:${secret_name}" || true
+    security add-generic-password -a "$(whoami)" -s "st:${secret_name}" -w "${secret}" -U
+    echo "Successfult stored '$secret_name' in the keychain."
+  )
+}
+function st-sync() {
+  (
+    set -e
+    local bw_session=$(bw unlock --raw)
+    bw --session "${bw_session}" sync
+    for secret_name in "$@"; do
+      echo "Syncing '$secret_name'..."
+      local secret="$(bw --session "${bw_session}" get notes "${secret_name}")"
+      st-set "$secret_name" "$secret" || echo "Failed to sync ${secret_name}!"
+    done
+  )
+}
 
+
+
+# ZSH plugins
+# - zsh-syntax-highlighting
+source ${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# - zsh-history-substring-search
+source ${HOMEBREW_PREFIX}/share/zsh-history-substring-search/zsh-history-substring-search.zsh
+bindkey '^K' history-substring-search-up
+bindkey '^J' history-substring-search-down
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
+# - zsh-autosuggestions
+source ${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#495269'
+bindkey '^L' autosuggest-execute
+bindkey '^ ' autosuggest-accept
 
 # Initialize completion
 autoload -Uz compinit && compinit

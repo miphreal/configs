@@ -24,7 +24,7 @@ font_family {{ kitty_font }}
 #:     italic_font      Operator Mono Book Italic
 #:     bold_italic_font Operator Mono Medium Italic
 
-font_size 13.0
+font_size {{ kitty_font_size }}
 
 #: Font size (in pts)
 
@@ -1153,7 +1153,7 @@ macos_traditional_fullscreen yes
 
 #:     map ctrl+f>2 set_font_size 20
 
-# kitty_mod ctrl+shift
+kitty_mod ctrl+shift
 
 #: The value of kitty_mod is used as the modifier for all default
 #: shortcuts, you can change it in your kitty.conf to change the
@@ -1282,7 +1282,8 @@ macos_traditional_fullscreen yes
 
 # map kitty_mod+right next_tab
 # map kitty_mod+left  previous_tab
-map kitty_mod+t     new_tab_with_cwd
+map kitty_mod+t       new_tab_with_cwd
+map super+t           new_tab
 # map kitty_mod+q     close_tab
 # map shift+cmd+w     close_os_window
 # map kitty_mod+.     move_tab_forward
@@ -1293,8 +1294,16 @@ map kitty_mod+t     new_tab_with_cwd
 #: the first tab, 2 the second tab and -1 being the previously active
 #: tab, and any number larger than the last tab being the last tab::
 
-#:     map ctrl+alt+1 goto_tab 1
-#:     map ctrl+alt+2 goto_tab 2
+map ctrl+alt+1 goto_tab 1
+map ctrl+alt+2 goto_tab 2
+map ctrl+alt+3 goto_tab 3
+map ctrl+alt+4 goto_tab 4
+map ctrl+alt+5 goto_tab 5
+map ctrl+alt+6 goto_tab 6
+map ctrl+alt+7 goto_tab 7
+map ctrl+alt+8 goto_tab 8
+map ctrl+alt+9 goto_tab 9
+map ctrl+alt+0 previous_tab
 
 #: Just as with new_window above, you can also pass the name of
 #: arbitrary commands to run when using new_tab and use
