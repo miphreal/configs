@@ -2,10 +2,10 @@ hs.console.clearConsole()
 
 hs.loadSpoon("SpoonInstall")
 spoon.SpoonInstall:andUse("ReloadConfiguration", { start = true })
-spoon.SpoonInstall:andUse("Keychain")
 
 hs.application.enableSpotlightForNameSearches(true)
 
+--
 local spaces = hs.spaces.spacesForScreen()
 
 local function pretty(arg, msg)
