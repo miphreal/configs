@@ -10,6 +10,9 @@ def main(conf):
     #     conf.sh("git clone --depth 1 {{ fonts_repo }} {{ fonts_cache_dir }}")
     #     conf.sh("bash {{ fonts_cache_dir }}/install.sh")
 
+    # brew tap homebrew/cask-fonts
+    # brew install font-hack-nerd-font
+
     conf.conf(
         FiraCode="Fira Code",
         FiraCodeRetina="FiraCode-Retina",

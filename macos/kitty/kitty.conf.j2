@@ -508,6 +508,7 @@ bell_on_tab yes
 #: as number of cells instead of pixels.
 
 # enabled_layouts *
+enabled_layouts tall:bias=50;full_size=1;mirrored=false
 
 #: The enabled window layouts. A comma separated list of layout names.
 #: The special value all means all layouts. The first listed layout
@@ -637,7 +638,10 @@ tab_bar_margin_height     3 3
 tab_bar_style             separator
 tab_bar_min_tabs          1
 tab_separator             ""
-tab_title_template        "{fmt.fg._5c6370}{fmt.bg.default}{fmt.fg._abb2bf}{fmt.bg._5c6370}{index}: {title}{fmt.fg._5c6370}{fmt.bg.default} "
+# tab_title_template        "{fmt.fg._5c6370}{fmt.bg.default}{fmt.fg._abb2bf}{fmt.bg._5c6370}{index}: {title}{fmt.fg._5c6370}{fmt.bg.default} "
+# active_tab_title_template "{fmt.fg._e5c07b}{fmt.bg.default}{fmt.fg._282c34}{fmt.bg._e5c07b}{index}: {title}{fmt.fg._e5c07b}{fmt.bg.default} "
+
+tab_title_template        "{fmt.fg._5c6370}{fmt.bg.default}{fmt.fg._aabb2bfbb2bf}{fmt.bg._5c6370}{index}: {title}{fmt.fg._5c6370}{fmt.bg.default} "
 active_tab_title_template "{fmt.fg._e5c07b}{fmt.bg.default}{fmt.fg._282c34}{fmt.bg._e5c07b}{index}: {title}{fmt.fg._e5c07b}{fmt.bg.default} "
 
 tab_bar_edge top
@@ -741,6 +745,8 @@ tab_bar_edge top
 #: ]]]
 
 #: Color scheme [[[
+
+
 
 background #ffffff
 foreground #324d3c
@@ -1487,10 +1493,5 @@ map ctrl+alt+0 previous_tab
 
 #: ]]]
 
-
-map ctrl+f launch --type=overlay --stdin-source=@screen_scrollback /usr/bin/fzf --no-sort --no-mouse --exact -i
-
-include ./kitty-themes/themes/{{ theme }}.conf
-
-selection_foreground none
-selection_background none
+# Set current theme
+include current-theme.conf

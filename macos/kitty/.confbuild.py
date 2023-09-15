@@ -29,7 +29,7 @@ def kitty(conf):
         )
 
     conf.sh("cp -r {{ current_config_dir }}/icons/* {{ kitty_conf.parent }}")
-    conf.sh("cp {{ current_config_dir }}/tab_bar.py {{ kitty_conf.parent }}")
+    conf.sh("cp {{ current_config_dir }}/current-theme.conf {{ kitty_conf.parent }}")
 
     # reload kitty
     conf.sh("kill -USR1 $(pgrep -a kitty) | true")

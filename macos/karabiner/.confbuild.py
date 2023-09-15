@@ -244,7 +244,12 @@ def parse_to_def(to_: str) -> dict:
 
         elif spec.startswith('sh:'):
             # handle sh command target
-            _to_events.append(to_sh(spec[3:]))
+            _to_events.append(to_sh(spec.removeprefix('sh:')))
+
+        elif spec.startswith('app:'):
+            # handle sh command target
+            app_name = spec.removeprefix("app:")
+            _to_events.append(to_sh(f"open -a '{app_name}'"))
 
         elif spec.startswith('notify:'):
             # show notification
@@ -422,6 +427,12 @@ karabiner_conf = {
                 f10 => mute
                 f11 => volume_decrement
                 f12 => volume_increment
+
+                # Apps hotkeys
+                # cmd 1 => app:Google Chrome
+                # cmd 2 => app:kitty
+                # cmd 3 => app:Visual Studio Code
+                # cmd 4 => app:Mail
 
                 # Complex rules
                 !$vim_mode=on: cmd option v => $vim_mode=on
