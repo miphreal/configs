@@ -65,6 +65,7 @@ local function smart_space_switcher(apps, space)
       -- Switching to another space
       print("switch to space", space)
       hs.eventtap.keyStroke({ "cmd", "ctrl", "alt" }, tostring(space))
+
       if #apps == 1 then
         print("try to focus", apps[1])
         print("focused", hs.application.launchOrFocus(apps[1]))
@@ -73,7 +74,21 @@ local function smart_space_switcher(apps, space)
   end
 end
 
+function cur_space_wins()
+  local wins = hs.window.orderedWindows() -- returns wins in current space only
+  local cur_wins = {}
+  pretty(wins, "wins")
 
+  for _, win in ipairs(wins) do
+    if win:title() then
+      table.insert(cur_wins, win)
+    end
+  end
+
+  return cur_wins
+end
+
+pretty(cur_space_wins())
 
 local conf = {
   spaces = {
@@ -109,3 +124,47 @@ end
 hs.layout.apply({
   { "Google Chrome", nil, nil, hs.layout.maximized, nil, nil },
 })
+
+--
+-- Drag window under cursor (cmd + left mouse)
+--
+draggable_win = {
+  win = nil,
+  drag_event = hs.eventtap.new({ hs.eventtap.event.types.leftMouseDragged }, function(e)
+    if not draggable_win.win then
+      return nil
+    end
+
+    local dx = e:getProperty(hs.eventtap.event.properties.mouseEventDeltaX)
+    local dy = e:getProperty(hs.eventtap.event.properties.mouseEventDeltaY)
+
+    draggable_win.win:move({ dx, dy }, nil, false, 0)
+  end),
+
+  kb_event = hs.eventtap.new({ hs.eventtap.event.types.flagsChanged }, function(e)
+    local flags = e:getFlags()
+
+    if flags.cmd then
+      draggable_win.win = get_window_under_mouse()
+      draggable_win.drag_event:start()
+    else
+      draggable_win.win = nil
+      draggable_win.drag_event:stop()
+    end
+  end),
+
+  start = function()
+    draggable_win.kb_event:start()
+  end,
+}
+
+function get_window_under_mouse()
+  local pos = hs.geometry.new(hs.mouse.getAbsolutePosition())
+  local screen = hs.mouse.getCurrentScreen()
+
+  return hs.fnutils.find(hs.window.orderedWindows(), function(w)
+    return screen == w:screen() and pos:inside(w:frame())
+  end)
+end
+
+draggable_win.start()
