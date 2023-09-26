@@ -14,6 +14,8 @@ MODIFIER_GROUPS = {
 }
 KEY_ALIASES = {
     "cmd": "command",
+    "opt": "option",
+    "ctrl": "control",
     "left_alt": "left_option",
     "right_alt": "right_option",
     "left_gui": "left_command",
