@@ -5,6 +5,11 @@ spoon.SpoonInstall:andUse("ReloadConfiguration", { start = true })
 
 hs.application.enableSpotlightForNameSearches(true)
 
+--[[
+  TODO:
+    - autofocus top window when moving cursor from one screen to another
+]]--
+
 --
 local spaces = hs.spaces.spacesForScreen()
 

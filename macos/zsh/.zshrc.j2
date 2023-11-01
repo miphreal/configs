@@ -30,7 +30,7 @@ setopt interactivecomments  # recognize comments
 # Filter our sensitive content from history
 HISTORY_FILTER_EXCLUDE=(_key token access bearer security password session)
 function _history_filter() {
-  local cmd="${1,,}"
+  local cmd="${1:l}"
   local warning="\033[36;2m\033[36;3m🛡️skipping history for this command.\033[0m\n"
   local pattern
   for pattern in $HISTORY_FILTER_EXCLUDE; do

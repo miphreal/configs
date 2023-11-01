@@ -1,7 +1,7 @@
 export EDITOR="nvim"
 export VISUAL="nvim"
 
-export PATH="$HOME/.local/bin:{{ dep('../commands').scripts_dir }}:$PATH"
+export PATH="$HOME/.local/bin:{{ dep('../commands').scripts_dir }}:{{ dep('../docs:latex').bin_dir }}:$PATH"
 
 . "$HOME/.cargo/env"
 

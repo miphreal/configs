@@ -32,6 +32,7 @@ def macos(conf):
         './commands',
         './brew',
         './git',
+        './docs',
         './yabai',
         './karabiner',
         './kitty',
