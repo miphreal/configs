@@ -13,7 +13,13 @@ def main(conf):
     # brew tap homebrew/cask-fonts
     # brew install font-hack-nerd-font
 
+    conf[
+        "brew::font-computer-modern",
+        "brew::font-fira-code-nerd-font",
+        "brew::font-hack-nerd-font",
+        "brew::font-iosevka",
+    ]
+
     conf.conf(
         FiraCode="Fira Code",
-        FiraCodeRetina="FiraCode-Retina",
     )

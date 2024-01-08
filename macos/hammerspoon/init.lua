@@ -101,17 +101,19 @@ local conf = {
       apps = { "Google Chrome" },
     },
     [2] = {
-      apps = { "Kitty" },
+      apps = { "Kitty", "Visual Studio Code" },
     },
     [3] = {
-      apps = { "Visual Studio Code" },
-    },
+      apps = { "Obsidian", "Notion" },
+5   },
     [4] = {
-      apps = { "Notion", "Mail", "Calendar" },
+      apps = { "Mail", "Calendar" },
     },
     [5] = {
       apps = { "Telegram", "Slack", "Microsoft Teams" },
     },
+    [6] = {apps={}},
+    [7] = {apps={}},
   },
 }
 
@@ -172,4 +174,4 @@ function get_window_under_mouse()
   end)
 end
 
-draggable_win.start()
+-- draggable_win.start()

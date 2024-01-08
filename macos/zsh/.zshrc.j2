@@ -113,16 +113,29 @@ source ~/Develop/playground/envrc-tools/envrc.sh; envrc hook zsh
 # Secrets
 function st-get() {
   local secret_name="$1"
-  local secret="$(security find-generic-password -a "$(whoami)" -s "st:${secret_name}" -w 2>/dev/null)"
-  echo $secret
+
+  local secret_raw=$(security find-generic-password -C note -s "st:${secret_name}" -w)
+  if [ ${#secret_raw} -le 255 ]; then
+    echo $secret_raw
+  else
+    local secret=$(
+        echo "$secret_raw" | xxd -r -p | \
+        xmllint --xpath "//dict/data/text()" - | \
+        base64 --decode | \
+        textutil -stdin -convert txt -stdout
+    )
+    echo $secret
+  fi
 }
+
 function st-set() {
   (
     set -e
     local secret_name="$1"
     local secret="$2"
     security delete-generic-password -a "$(whoami)" -s "st:${secret_name}" || true
-    security add-generic-password -a "$(whoami)" -s "st:${secret_name}" -w "${secret}" -U
+    security delete-generic-password -a "$(whoami)" -C "note" -s "st:${secret_name}" || true
+    security add-generic-password -a "$(whoami)" -C note  -s "st:${secret_name}" -w "${secret}" -U
     echo "Successfult stored '$secret_name' in the keychain."
   )
 }

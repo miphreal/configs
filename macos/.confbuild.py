@@ -59,11 +59,14 @@ def asdf(conf):
 def common(conf):
     conf[
         "brew::coreutils",
+        "brew::moreutils",
         "brew::exa",
         "brew::fzf",
         "brew::jq",
         "brew::yq",
         "brew::pipx",  # todo: install pipx directly to not depend on homebrew python
+
+        "brew::stats",
 
         "brew::trash",  # cli tool to move files to MacOS trash
 
