@@ -11,6 +11,9 @@ ASDF_ZSH_RC = """
 . "$HOME/.asdf/asdf.sh"
 # append completions to fpath
 fpath=(${ASDF_DIR}/completions $fpath)
+
+# Activate plugins
+. ~/.asdf/plugins/golang/set-env.zsh
 """
 
 BW_ZSH_RC = """
@@ -28,17 +31,17 @@ get-secret() {
 
 def macos(conf):
     conf[
-        ':common',
-        './commands',
-        './brew',
-        './git',
-        './docs',
-        './yabai',
-        './karabiner',
-        './kitty',
-        './nvm',
-        './pyenv',
-        './zsh',
+        ":common",
+        "./commands",
+        "./brew",
+        "./git",
+        "./docs",
+        "./yabai",
+        "./karabiner",
+        "./kitty",
+        "./nvm",
+        "./pyenv",
+        "./zsh",
     ]
 
 
@@ -53,7 +56,28 @@ def direnv(conf):
 
 
 def asdf(conf):
+    """
+    Installed plugins:
+    - awscli
+    - golang
+    - java
+    - python
+    - ruby
+    - shellcheck
+    - terraform
+    """
+    plugins = [
+        "awscli",
+        "golang",
+        "java",
+        "python",
+        "ruby",
+        "shellcheck",
+        "terraform",
+    ]
     conf(zsh_rc=ASDF_ZSH_RC)
+    for plugin in plugins:
+        conf.sh(f"asdf plugin add {plugin}")
 
 
 def common(conf):
@@ -65,19 +89,13 @@ def common(conf):
         "brew::jq",
         "brew::yq",
         "brew::pipx",  # todo: install pipx directly to not depend on homebrew python
-
         "brew::stats",
-
         "brew::trash",  # cli tool to move files to MacOS trash
-
         "brew::awscli",
-
         "brew::circleci",
-
         "pipx::pgcli",
         "pipx::poetry",
         "pipx::litecli",
-
         "brew::youtube-dl",
         "pipx::yt-dlp",
     ]
