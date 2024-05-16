@@ -98,7 +98,7 @@ pretty(cur_space_wins())
 local conf = {
   spaces = {
     [1] = {
-      apps = { "Google Chrome" },
+      apps = { "Arc" },
     },
     [2] = {
       apps = { "Kitty", "Visual Studio Code" },

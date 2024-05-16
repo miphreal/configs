@@ -84,19 +84,22 @@ def common(conf):
     conf[
         "brew::coreutils",
         "brew::moreutils",
-        "brew::exa",
-        "brew::fzf",
+        "brew::curl",
+        "brew::git",
+        "brew::exa",  # ≈ls
+        "brew::fzf",  # fuzzy file finder (by file name)
+        "brew::fd",  # ≈find
+        "brew::sd",  # ≈sed
         "brew::jq",
         "brew::yq",
         "brew::pipx",  # todo: install pipx directly to not depend on homebrew python
         "brew::stats",
         "brew::trash",  # cli tool to move files to MacOS trash
-        "brew::awscli",
-        "brew::circleci",
+        # "brew::awscli",
+        # "brew::circleci",
         "pipx::pgcli",
         "pipx::poetry",
         "pipx::litecli",
-        "brew::youtube-dl",
         "pipx::yt-dlp",
     ]
 
