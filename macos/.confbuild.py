@@ -13,7 +13,7 @@ ASDF_ZSH_RC = """
 fpath=(${ASDF_DIR}/completions $fpath)
 
 # Activate plugins
-. ~/.asdf/plugins/golang/set-env.zsh
+. "$HOME/.asdf/plugins/golang/set-env.zsh"
 """
 
 BW_ZSH_RC = """
@@ -25,6 +25,17 @@ secrets-unlock() {
 get-secret() {
     session=$(security find-generic-password -a "$(whoami)" -s "bw/session" -w)
     bw --session "${session}" get notes $1
+}
+"""
+
+YAZI_ZSH_RC = """
+function yy() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
 }
 """
 
@@ -80,13 +91,18 @@ def asdf(conf):
         conf.sh(f"asdf plugin add {plugin}")
 
 
+def yazi(conf):
+    conf["brew::yazi"]
+    conf(zsh_rc=YAZI_ZSH_RC)
+
+
 def common(conf):
     conf[
         "brew::coreutils",
         "brew::moreutils",
         "brew::curl",
         "brew::git",
-        "brew::exa",  # ≈ls
+        "brew::eza",  # ≈ls
         "brew::fzf",  # fuzzy file finder (by file name)
         "brew::fd",  # ≈find
         "brew::sd",  # ≈sed
@@ -102,6 +118,9 @@ def common(conf):
         "pipx::litecli",
         "pipx::yt-dlp",
     ]
+    conf(
+        yazi_rc=YAZI_ZSH_RC,
+    )
 
 
 """

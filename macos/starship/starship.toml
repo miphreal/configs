@@ -37,3 +37,7 @@ pyenv_version_name = true
 variable = 'ENVRC_PROMPT'
 style = 'italic dimmed 153'
 format = '[$env_value]($style) '
+
+[docker_context]
+disabled = true
+

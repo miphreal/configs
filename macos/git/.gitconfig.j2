@@ -11,6 +11,8 @@
 	diff = auto
 	interactive = auto
 	status = auto
+[interactive]
+	diffFilter = delta --color-only
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
@@ -27,6 +29,13 @@
 [rerere]
 	enabled = true
 [core]
+	pager = delta
 	untrackedcache = true
 	fsmonitor = true
+[delta]
+	navigate = true
+[merge]
+	conflictstyle = diff3
+[diff]
+	colorMoved = default
 

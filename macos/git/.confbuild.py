@@ -1,9 +1,10 @@
 def git(conf):
     conf[
-        'brew::git', 
+        'brew::git',
         'brew::git-lfs',
         'brew::gh',
         'brew::gnupg',
+        'brew::git-delta',
         ':lazygit',
     ]
     conf(

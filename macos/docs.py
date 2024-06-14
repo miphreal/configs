@@ -8,7 +8,7 @@ def pandoc(conf):
     conf['brew::pandoc']
 
 def latex(conf):
-    conf['brew::basictex']
+    conf['brew::mactex']
     conf(
         bin_dir='/Library/TeX/texbin',
     )

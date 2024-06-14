@@ -65,8 +65,8 @@ fi
 alias ssh="kitty +kitten ssh"
 
 # ls
-alias ls=exa
-alias ll='exa -la'
+alias ls=eza
+alias ll='eza -la'
 
 # git
 alias gitst='git status -sb'
@@ -102,6 +102,7 @@ export PATH="/usr/local/go/bin:$HOME/go/bin:$PATH"
 {{ dep('../kitty').zsh_rc }}
 {{ dep('../starship').zsh_rc }}
 {{ dep('macos:asdf').zsh_rc }}
+{{ dep('macos:yazi').zsh_rc }}
 
 
 ##
@@ -111,6 +112,7 @@ source ~/Develop/playground/envrc-tools/envrc.sh; envrc hook zsh
 
 ##
 # Secrets
+{% raw %}
 function st-get() {
   local secret_name="$1"
 
@@ -151,6 +153,7 @@ function st-sync() {
     done
   )
 }
+{% endraw %}
 
 
 
@@ -171,3 +174,10 @@ bindkey '^ ' autosuggest-accept
 
 # Initialize completion
 autoload -Uz compinit && compinit
+
+
+# Other Dev functions / utils
+function pyclean () {
+  find . -type f -name "*.py[co]" -delete
+  find . -type d -name "__pycache__" -delete
+}
