@@ -28,16 +28,50 @@ format = '''[╰─ took: $duration]($style)
 '''
 
 [python]
-style = 'italic dimmed green'
-pyenv_prefix = ''
+format = '[· ${symbol}(${version})(\[$virtualenv\] )]($style)'
+version_format = '${raw}'
+style = 'dimmed #006600'
 symbol = '🐍'
-pyenv_version_name = true
+
+[rust]
+format = '[· $symbol($version )]($style)'
+version_format = '${raw}'
+style = 'dimmed #e60000'
+symbol = '🦀'
 
 [env_var.ENVRC_PROMPT]
 variable = 'ENVRC_PROMPT'
 style = 'italic dimmed 153'
-format = '[$env_value]($style) '
+format = '[· $env_value]($style) '
+
+[package]
+format = '[$symbol$version]($style) '
+style = 'dimmed #ffa31a'
+version_format = '${raw}'
+symbol = '📦'
 
 [docker_context]
 disabled = true
 
+[git_branch]
+format = '[$symbol$branch(:$remote_branch)]($style) '
+symbol = ''
+style = 'bold #8533ff'
+
+
+[git_metrics]
+disabled = false
+added_style = 'dimmed #006600'
+deleted_style = 'dimmed #cc3300'
+format = '(([+$added]($added_style))([-$deleted]($deleted_style)) )'
+
+[git_status]
+format = '([$all_status$ahead_behind]($style) )'
+style = 'italic dimmed #990000'
+deleted = '‼'
+modified = '±'
+conflicted = '⚠'
+untracked = '…'
+staged = ''
+stashed = ''
+renamed = ''
