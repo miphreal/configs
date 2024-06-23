@@ -43,6 +43,12 @@ version_format = '${raw}'
 style = 'dimmed #e60000'
 symbol = '🦀'
 
+[lua]
+format = '[· $symbol($version )]($style)'
+version_format = '${raw}'
+style = 'dimmed #b3b300'
+symbol = ''
+
 [env_var.ENVRC_PROMPT]
 variable = 'ENVRC_PROMPT'
 style = 'italic dimmed 153'
