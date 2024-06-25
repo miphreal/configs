@@ -1,0 +1,56 @@
+set-option -g default-shell /bin/zsh
+
+set -g mouse on
+set -s set-clipboard on
+
+# Reload config hotkey
+bind R source-file ~/.tmux.conf
+
+# Act like vim
+setw -g mode-keys vi
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind l select-pane -R
+bind H select-window -p
+bind L select-window -n
+
+# Use current dir to split windows
+bind '"' split-window -c "#{pane_current_path}"
+bind % split-window -h -c "#{pane_current_path}"
+
+# List of plugins
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-sensible'
+
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+# set -g @plugin 'tmux-plugins/tmux-continuum'
+# set -g @continuum-restore 'on'
+
+# Initialize TMUX plugin manager
+run '~/.tmux/plugins/tpm/tpm'
+
+# Only show status bar if there is more then one window
+set -g status off
+set-hook -g after-new-window      'if "[ #{session_windows} -gt 1 ]" "set status on"'
+set-hook -g after-kill-pane       'if "[ #{session_windows} -lt 2 ]" "set status off"'
+set-hook -g pane-exited           'if "[ #{session_windows} -lt 2 ]" "set status off"'
+set-hook -g window-layout-changed 'if "[ #{session_windows} -lt 2 ]" "set status off"'
+
+# Theme
+set-option -g status-fg '#5C6A72'
+set-option -g status-bg '#FDF6E3'
+set-option -g mode-style fg='#DF69BA',bg='#EAEDC8'
+set-option -g pane-border-style fg='#5C6A72'
+set-option -g pane-active-border-style fg='#5C6A72'
+set-option -g message-style fg='#E66868',bg='#EFEBD4'
+set-option -g message-command-style fg=colour223,bg=colour239
+set-window-option -g clock-mode-colour '#3A94C5'
+set-window-option -g window-status-bell-style fg='#FDF6E3',bg='#E66868'
+set -g status-left ''
+set -g status-right ''
+set-option -g status-justify centre
+set-option -g status-style fg='#5C6A72',bg='#EFEBD4',default
+set -g window-status-separator ''
+set -g window-status-format "#[fg=#A6B0A0,bg=#FDF6E3] #W "
+set -g window-status-current-format "#[fg=#5C6A72,bg=#F0F1D2,bold] #W #[fg=#F0F1D2,bg=#FDF6E3,nobold]"
