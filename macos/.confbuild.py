@@ -1,9 +1,3 @@
-DIRENV_ZSH_RC = """
-##
-# Direnv shell integration
-eval "$(direnv hook zsh)"
-"""
-
 ASDF_ZSH_RC = """
 ##
 # `asdf` tool
@@ -61,11 +55,6 @@ def bitwarden(conf):
     conf["brew::bitwarden-cli"]
 
 
-def direnv(conf):
-    conf(zsh_rc=DIRENV_ZSH_RC)
-    conf["brew::direnv"]
-
-
 def asdf(conf):
     """
     Installed plugins:
@@ -96,6 +85,29 @@ def yazi(conf):
     conf(zsh_rc=YAZI_ZSH_RC)
 
 
+def fd(conf):
+    """Fast `find` alternative"""
+    conf["brew::fd"]
+
+
+def fzf(conf):
+    """Fuzzy file finder (by file name)"""
+    conf[
+        "brew::fzf",
+        ":fd", # fzf depends on fd
+    ]
+    conf(
+        zsh_rc="""
+            # FZF config
+            export FZF_DEFAULT_OPTS="--height 40% --layout reverse --inline-info"
+            # - setting fd as the default source for fzf
+            export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git'
+            export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+            source <(fzf --zsh)
+        """
+    )
+
+
 def common(conf):
     conf[
         "brew::coreutils",
@@ -103,8 +115,6 @@ def common(conf):
         "brew::curl",
         "brew::git",
         "brew::eza",  # ≈ls
-        "brew::fzf",  # fuzzy file finder (by file name)
-        "brew::fd",  # ≈find
         "brew::sd",  # ≈sed
         "brew::jq",
         "brew::yq",
@@ -118,9 +128,6 @@ def common(conf):
         "pipx::litecli",
         "pipx::yt-dlp",
     ]
-    conf(
-        yazi_rc=YAZI_ZSH_RC,
-    )
 
 
 """
