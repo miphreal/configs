@@ -1,5 +1,3 @@
-from pathlib import Path
-
 ZSH_RC = """
 ##
 # Kitty integration
@@ -15,6 +13,7 @@ def kitty(conf):
     conf(
         kitty_font="FiraCode Nerd Font Mono",
         kitty_font_size="11.0",
+        kitty_font_italic="Hack Nerd Font Mono",
         kitty_conf=conf["path::{{ user.config }}/kitty/kitty.conf"],
         themes_dir=conf["dir::{{ user.config }}/kitty/kitty-themes"],
         theme="SpaceGray",

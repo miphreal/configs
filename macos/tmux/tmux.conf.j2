@@ -17,6 +17,12 @@ bind l select-pane -R
 bind H select-window -p
 bind L select-window -n
 
+# Smart pane switching with awareness of Neovim splits.
+bind-key -n C-M-h if -F "#{@pane-is-vim}" 'send-keys C-M-h'  'select-pane -L'
+bind-key -n C-M-j if -F "#{@pane-is-vim}" 'send-keys C-M-j'  'select-pane -D'
+bind-key -n C-M-k if -F "#{@pane-is-vim}" 'send-keys C-M-k'  'select-pane -U'
+bind-key -n C-M-l if -F "#{@pane-is-vim}" 'send-keys C-M-l'  'select-pane -R'
+
 # Use current dir to split windows
 bind '"' split-window -c "#{pane_current_path}"
 bind % split-window -h -c "#{pane_current_path}"
