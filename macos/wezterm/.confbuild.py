@@ -6,7 +6,7 @@ if [[ ! -f "$_wezterm_integration_file" ]]; then
   curl -o "$_wezterm_integration_file" -L "https://raw.githubusercontent.com/wez/wezterm/master/install.sh"
 fi
 . "$_wezterm_integration_file"
-
+eval "$(wezterm shell-completion --shell zsh)"
 """
 
 def wezterm(conf):

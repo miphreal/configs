@@ -97,16 +97,6 @@ alias dkc='docker-compose'
 export PATH="/usr/local/go/bin:$HOME/go/bin:$PATH"
 
 
-{{ dep('../nvm').zsh_rc }}
-{{ dep('../pyenv').zsh_rc }}
-{{ dep('../kitty').zsh_rc }}
-{{ dep('../wezterm').zsh_rc }}
-{{ dep('../starship').zsh_rc }}
-{{ dep('macos:asdf').zsh_rc }}
-{{ dep('macos:yazi').zsh_rc }}
-{{ dep('macos:fzf').zsh_rc }}
-
-
 ##
 # envrc-tools
 source ~/Develop/playground/envrc-tools/envrc.sh; envrc hook zsh
@@ -199,3 +189,13 @@ function pyclean () {
   find . -type f -name "*.py[co]" -delete
   find . -type d -name "__pycache__" -delete
 }
+
+
+{{ dep('macos/nvm').zsh_rc }}
+{{ dep('macos/pyenv').zsh_rc }}
+{{ dep('macos/kitty').zsh_rc }}
+{{ dep('macos/wezterm').zsh_rc }}
+{{ dep('macos/starship').zsh_rc }}
+{{ dep('macos:asdf').zsh_rc }}
+{{ dep('macos:yazi').zsh_rc }}
+{{ dep('macos:fzf').zsh_rc }}
