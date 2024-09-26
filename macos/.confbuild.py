@@ -43,6 +43,7 @@ def macos(conf):
         "./docs",
         "./karabiner",
         "./kitty",
+        "./wezterm",
         "./tmux",
         "./nvm",
         "./pyenv",
