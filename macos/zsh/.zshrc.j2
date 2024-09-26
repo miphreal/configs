@@ -137,8 +137,11 @@ function st-set() {
     set -e
     local secret_name="$1"
     local secret="$2"
-    security delete-generic-password -a "$(whoami)" -s "st:${secret_name}" || true
-    security delete-generic-password -a "$(whoami)" -C "note" -s "st:${secret_name}" || true
+
+    # Cleanup old secrets
+    security delete-generic-password -a "$(whoami)" -s "st:${secret_name}" > /dev/null 2>&1 || true
+    security delete-generic-password -a "$(whoami)" -C "note" -s "st:${secret_name}" > /dev/null 2>&1 || true
+
     security add-generic-password -a "$(whoami)" -C note  -s "st:${secret_name}" -w "${secret}" -U
     echo "Successfult stored '$secret_name' in the keychain."
   )
@@ -148,10 +151,23 @@ function st-sync() {
     set -e
     local bw_session=$(bw unlock --raw)
     bw --session "${bw_session}" sync
+    echo "Synced secrets state from Bitwarden."
     for secret_name in "$@"; do
-      echo "Syncing '$secret_name'..."
+      echo "=> Syncing '$secret_name'..."
       local secret="$(bw --session "${bw_session}" get notes "${secret_name}")"
-      st-set "$secret_name" "$secret" || echo "Failed to sync ${secret_name}!"
+      if [ -z "$secret" ]; then
+        echo "❗ No secret found for ${secret_name}!"
+        continue
+      fi
+
+      st-set "$secret_name" "$secret"
+
+      local stored_secret="$(st-get "$secret_name")"
+      if [ "$secret" != "$stored_secret" ]; then
+        echo "❗ Failed to sync ${secret_name}!"
+      else
+        echo "✅  Successfully synced ${secret_name}!"
+      fi
     done
   )
 }
