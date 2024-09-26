@@ -85,3 +85,9 @@ untracked = '…'
 staged = ''
 stashed = ''
 renamed = ''
+
+[custom.dkc_env]
+command = "activated-docker-env"
+when = "command -v activated-docker-env"
+style = 'bold dimmed #990000'
+format = '[·](dimmed #8a8987) [🐳\[$output\]]($style) '
