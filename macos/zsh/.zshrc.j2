@@ -199,7 +199,7 @@ function _zsh_title__update_title() {
   print -n "\e]0;${title}\a"
 }
 function _zsh_title__preprompt() {
-  local title=$(print -P '%(?..💢)\uf489 %(4~|…/%2~|%~)')
+  local title=$(print -P '\uf489 %(4~|…/%2~|%~) %(?..💢)')
   _zsh_title__update_title "$title"
 }
 function _zsh_title__precmdexec() {
