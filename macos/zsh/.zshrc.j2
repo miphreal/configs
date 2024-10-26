@@ -62,7 +62,6 @@ fi
 # ssh
 (eval "$(ssh-agent -s)") > /dev/null
 (ssh-add $HOME/.ssh/id_github) 2> /dev/null
-alias ssh="kitty +kitten ssh"
 
 # ls
 alias ls=eza
@@ -90,12 +89,10 @@ alias vim=nvim
 alias vi=nvim
 
 # containers
-alias dkc='docker-compose'
-
+alias dkc='docker compose'
 
 # go
 export PATH="/usr/local/go/bin:$HOME/go/bin:$PATH"
-
 
 ##
 # envrc-tools
@@ -189,6 +186,30 @@ function pyclean () {
   find . -type f -name "*.py[co]" -delete
   find . -type d -name "__pycache__" -delete
 }
+
+# Title management
+function _zsh_title__update_title() {
+  # escape '%' in $1, make nonprintables visible
+  local title=${(V)1//\%/\%\%}
+  # remove newlines
+  title=${title//$'\n'/}
+  if [[ -n "$DEV_PROJECT" ]]; then
+    title="❲$DEV_PROJECT❳ $title"
+  fi
+  print -n "\e]0;${title}\a"
+}
+function _zsh_title__preprompt() {
+  local title=$(print -P '%(?..💢)\uf489 %(4~|…/%2~|%~)')
+  _zsh_title__update_title "$title"
+}
+function _zsh_title__precmdexec() {
+  # escape '\'
+  local cmd=${1//\\/\\\\\\\\}
+  _zsh_title__update_title "$cmd"
+}
+add-zsh-hook precmd _zsh_title__preprompt
+add-zsh-hook preexec _zsh_title__precmdexec
+
 
 
 {{ dep('macos/nvm').zsh_rc }}

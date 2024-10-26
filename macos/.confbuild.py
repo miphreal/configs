@@ -1,3 +1,5 @@
+from textwrap import dedent
+
 ASDF_ZSH_RC = """
 ##
 # `asdf` tool
@@ -98,14 +100,14 @@ def fzf(conf):
         ":fd", # fzf depends on fd
     ]
     conf(
-        zsh_rc="""
+        zsh_rc=dedent("""
             # FZF config
             export FZF_DEFAULT_OPTS="--height 40% --layout reverse --inline-info"
             # - setting fd as the default source for fzf
             export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git'
             export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
             source <(fzf --zsh)
-        """
+        """)
     )
 
 
