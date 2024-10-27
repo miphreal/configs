@@ -193,19 +193,27 @@ function _zsh_title__update_title() {
   local title=${(V)1//\%/\%\%}
   # remove newlines
   title=${title//$'\n'/}
-  if [[ -n "$DEV_PROJECT" ]]; then
-    title="❲$DEV_PROJECT❳ $title"
-  fi
   print -n "\e]0;${title}\a"
 }
 function _zsh_title__preprompt() {
-  local title=$(print -P '\uf489 %(4~|…/%2~|%~) %(?..💢)')
-  _zsh_title__update_title "$title"
+  local error=$(print -P '%(?..💢)')
+  local title
+  if [[ -n "$DEV_PROJECT" ]]; then
+    local path="./${PWD#${HOME}/Develop/}"
+    title="❲$DEV_PROJECT❳   $path"
+  else
+    title=$(print -P '  %(4~|…/%2~|%~)')
+  fi
+  _zsh_title__update_title "$title $error"
 }
 function _zsh_title__precmdexec() {
   # escape '\'
-  local cmd=${1//\\/\\\\\\\\}
-  _zsh_title__update_title "$cmd"
+  local title=${1//\\/\\\\\\\\}
+
+  if [[ -n "$DEV_PROJECT" ]]; then
+    title="❲$DEV_PROJECT❳ $title"
+  fi
+  _zsh_title__update_title "$title"
 }
 add-zsh-hook precmd _zsh_title__preprompt
 add-zsh-hook preexec _zsh_title__precmdexec
