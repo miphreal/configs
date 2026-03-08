@@ -18,6 +18,8 @@ def main(conf):
         "brew::font-fira-code-nerd-font",
         "brew::font-hack-nerd-font",
         "brew::font-iosevka",
+        "brew::font-zed-mono-nerd-font",
+        "brew::font-ibm-plex-sans",
     ]
 
     conf.conf(

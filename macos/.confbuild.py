@@ -4,9 +4,10 @@ ASDF_ZSH_RC = """
 ##
 # `asdf` tool
 #
-. "$HOME/.asdf/asdf.sh"
-# append completions to fpath
-fpath=(${ASDF_DIR}/completions $fpath)
+export ASDF_DATA_DIR="$HOME/.asdf"
+export PATH="$ASDF_DATA_DIR/shims:$PATH"
+
+fpath=(${ASDF_DATA_DIR:-$HOME/.asdf}/completions $fpath)
 
 # Activate plugins
 . "$HOME/.asdf/plugins/golang/set-env.zsh"

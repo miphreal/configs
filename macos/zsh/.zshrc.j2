@@ -59,10 +59,6 @@ then
   FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 fi
 
-# ssh
-(eval "$(ssh-agent -s)") > /dev/null
-(ssh-add $HOME/.ssh/id_github) 2> /dev/null
-
 # ls
 alias ls=eza
 alias ll='eza -la'
@@ -88,11 +84,17 @@ alias git-pull='git pull origin $(gitcb)'
 alias vim=nvim
 alias vi=nvim
 
+# zed
+alias zed="/Applications/Zed.app/Contents/MacOS/cli"
+
 # containers
 alias dkc='docker compose'
 
 # go
 export PATH="/usr/local/go/bin:$HOME/go/bin:$PATH"
+
+# tailscale
+alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
 
 ##
 # envrc-tools
@@ -228,3 +230,6 @@ add-zsh-hook preexec _zsh_title__precmdexec
 {{ dep('macos:asdf').zsh_rc }}
 {{ dep('macos:yazi').zsh_rc }}
 {{ dep('macos:fzf').zsh_rc }}
+
+
+. "$HOME/Develop/scripts/.scriptsrc"
