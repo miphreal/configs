@@ -50,6 +50,7 @@ def macos(conf):
         "./tmux",
         "./nvm",
         "./pyenv",
+        "./rust",
         "./zsh",
     ]
 
